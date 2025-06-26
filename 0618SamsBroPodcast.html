@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI的未来：讲义重构呈现 (最终版)</title>
+    <script src="https://cdn.tailwindcss.com/3.4.3"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* 基本设置和字体 */
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background-color: #323c6a; /* slate-950 (最底层背景) */
+            color: #cbd5e1; /* slate-300 */
+            overflow: hidden; /* 防止整个页面滚动 */
+        }
+
+        /* 渐变文本和背景效果 */
+        .text-gradient {
+            background: linear-gradient(90deg, #22d3ee, #06b6d4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .bg-gradient-radial {
+            background-image: radial-gradient(circle at center, rgba(14, 165, 233, 0.1) 0%, transparent 60%);
+        }
+
+        /* 高亮线条装饰 */
+        .highlight-line {
+            position: relative;
+            padding-left: 1.5rem;
+        }
+        .highlight-line::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(180deg, #22d3ee, #0891b2);
+            border-radius: 2px;
+            opacity: 0.8;
+        }
+
+        /* 幻灯片容器和切换逻辑 */
+        #slideshow-container {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #slides-wrapper {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.5s ease-in-out;
+        }
+        
+        /* 幻灯片单页样式 */
+        .slide {
+            flex: 0 0 100%;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            /* 页面边缘的留白 */
+            padding: 1.5rem;
+        }
+
+        /* 新增：内容包装器，带边框和不同背景色 */
+        .slide-content-wrapper {
+            width: 100%;
+            height: 100%;
+            background-color: #0f172a; /* slate-900 (比底层背景亮一级) */
+            border: 1px solid #1e293b; /* slate-800 */
+            border-radius: 1rem; /* rounded-xl */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            overflow-y: auto; /* 如果内容超长，允许内部滚动 */
+        }
+        
+        /* 导航箭头 */
+        .nav-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 10;
+            background-color: rgba(0, 0, 0, 0.3);
+            color: white;
+            border: 1px solid #1e293b;
+            border-radius: 50%;
+            width: 3rem;
+            height: 3rem;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .nav-arrow:hover {
+            background-color: rgba(14, 165, 233, 0.8);
+            border-color: #22d3ee;
+        }
+        .nav-arrow.hidden {
+            display: none;
+        }
+
+        #prev-btn { left: 0.5rem; }
+        #next-btn { right: 0.5rem; }
+
+        @media (min-width: 768px) {
+            #prev-btn { left: 1rem; }
+            #next-btn { right: 1rem; }
+            .slide { padding: 2.5rem; }
+            .slide-content-wrapper { padding: 3rem; }
+        }
+
+        /* 页码指示器 */
+        #slide-counter {
+            position: absolute;
+            bottom: 1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: #cbd5e1;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            border: 1px solid #1e293b;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div id="slideshow-container">
+        <div id="slides-wrapper">
+            
+            <div class="slide">
+                <div class="slide-content-wrapper bg-gradient-radial">
+                    <div class="text-center max-w-5xl w-full">
+                        <div class="text-lg font-medium text-cyan-400 mb-4 tracking-widest">A RECONSTRUCTED PRESENTATION</div>
+                        <h1 class="text-5xl md:text-8xl font-extrabold text-white">AI的未来</h1>
+                        <h2 class="text-4xl md:text-7xl font-bold text-gradient mt-2">中期展望</h2>
+                        <p class="mt-6 text-slate-400 text-lg">5-10 Year Outlook</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="slide">
+                <div class="slide-content-wrapper">
+                     <div class="max-w-5xl w-full">
+                        <h2 class="text-2xl md:text-3xl text-white">近期突破：从代码与聊天开始</h2>
+                        <p class="text-lg md:text-xl text-slate-400 mt-2">Recent Breakthroughs: Starting with Code & Chat</p>
+                        <div class="mt-8 grid md:grid-cols-2 gap-8 items-center">
+                            <div class="space-y-6">
+                                <div class="p-6 bg-slate-800/50 rounded-lg"><i class="fa-solid fa-code fa-2x text-cyan-400 mb-3"></i><h3 class="text-xl font-bold text-white">编程辅助</h3><p class="text-slate-400">当前最高效的应用场景之一。</p></div>
+                                <div class="p-6 bg-slate-800/50 rounded-lg"><i class="fa-solid fa-comments fa-2x text-cyan-400 mb-3"></i><h3 class="text-xl font-bold text-white">对话交互</h3><p class="text-slate-400">重新定义人机沟通的范式。</p></div>
+                            </div>
+                            <div class="text-center md:text-left"><div class="text-8xl md:text-9xl font-extrabold text-gradient">?</div><p class="text-2xl text-white mt-4">下一个颠覆性领域是什么?</p></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="slide">
+                <div class="slide-content-wrapper">
+                    <div class="text-center max-w-5xl w-full">
+                        <i class="fa-solid fa-flask-vial fa-4x text-cyan-400"></i>
+                        <h2 class="text-4xl md:text-6xl text-white mt-4">核心影响力：AI将<span class="text-gradient">发现新科学</span></h2>
+                        <p class="text-lg md:text-xl text-slate-400 mt-2">The Core Impact: AI Will Discover New Science</p>
+                        <p class="max-w-3xl mx-auto mt-6 text-lg">在5-10年的时间框架内，AI对人类最深远的影响将是自主发现新科学，其基础是我们已“破解”了模型的推理能力。</p>
+                        <div class="mt-8 grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+                            <div class="p-6 bg-slate-800/50 rounded-lg"><h3 class="font-bold text-lg text-white">当前阶段: 副驾驶 (Copilot)</h3><p class="text-slate-400 mt-2">将人类科学家的效率提升数倍。</p></div>
+                            <div class="p-6 bg-slate-800/50 rounded-lg"><h3 class="font-bold text-lg text-white">未来阶段: 自主探索</h3><p class="text-slate-400 mt-2">提出并验证新的物理学理论。</p></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="slide">
+                <div class="slide-content-wrapper">
+                    <div class="max-w-5xl w-full">
+                        <h2 class="text-2xl md:text-3xl text-white text-center">两大应用方向</h2>
+                        <p class="text-lg md:text-xl text-slate-400 mt-2 text-center">Empowering Business vs. Exploring Science</p>
+                        <div class="mt-8 grid md:grid-cols-2 gap-8">
+                            <div class="p-6 bg-slate-800/50 rounded-lg text-center"><i class="fa-solid fa-briefcase fa-3x text-cyan-400 mb-4"></i><h3 class="text-2xl font-bold text-white">赋能商业</h3><p class="text-slate-400 mt-3">充满了复杂、混乱的人类经济系统接口。</p></div>
+                            <div class="p-6 bg-slate-800/50 rounded-lg border border-cyan-500/50 text-center shadow-lg shadow-cyan-500/10"><i class="fa-solid fa-atom fa-3x text-cyan-400 mb-4"></i><h3 class="text-2xl font-bold text-white">探索科学</h3><p class="text-slate-400 mt-3">拥有清晰数据和目标的 <span class="text-cyan-400 font-bold">“更纯粹的问题”</span>。</p></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="slide">
+                <div class="slide-content-wrapper">
+                    <div class="max-w-5xl w-full grid md:grid-cols-2 gap-8 items-center">
+                        <div class="text-center"><i class="fa-solid fa-robot fa-8x text-cyan-400 opacity-80"></i></div>
+                        <div>
+                            <h2 class="text-3xl md:text-5xl text-white">物理世界：<br><span class="text-gradient">人形机器人的黎明</span></h2>
+                            <p class="text-lg md:text-xl text-slate-400 mt-2">The Physical World: Dawn of the Humanoid Robot</p>
+                            <ul class="mt-6 space-y-4 text-lg highlight-line">
+                                <li><strong class="text-white">时间线:</strong> 5-10年内，我们将拥有非常出色的通用人形机器人。</li>
+                                <li><strong class="text-white">社会冲击:</strong> 最直观的“未来已来”标志，其观感冲击远超软件。</li>
+                                <li><strong class="text-white">历史瓶颈:</strong> 机械工程的挑战曾是主要障碍，而非AI本身。</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="slide">
+                <div class="slide-content-wrapper">
+                    <div class="max-w-5xl w-full">
+                        <h2 class="text-2xl md:text-3xl text-white text-center">我们如何判断AI是否成功？</h2>
+                        <p class="text-lg md:text-xl text-slate-400 mt-2 text-center">How Do We Judge AI's Success?</p>
+                        <div class="mt-8 grid md:grid-cols-2 gap-8 items-center">
+                            <div class="space-y-4"><h3 class="text-xl font-bold text-white">传统的宏观指标</h3><p><i class="fa-solid fa-chart-line text-cyan-400 w-6"></i> GDP增长曲线出现拐点？</p><p><i class="fa-solid fa-heart-pulse text-cyan-400 w-6"></i> 人均寿命显著提升？</p><p><i class="fa-solid fa-globe-americas text-cyan-400 w-6"></i> 贫困率大幅下降？</p></div>
+                            <div class="p-6 bg-slate-800/50 rounded-lg"><h3 class="text-xl font-bold text-white flex items-center gap-3"><i class="fa-solid fa-circle-question text-cyan-400 fa-lg"></i>一个诡异的可能性</h3><p class="mt-3 text-slate-300">我们成功构建了超级智能，但世界看起来并没有发生根本性改变。我们很快适应了曾经的“奇迹”。</p></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="slide">
+                <div class="slide-content-wrapper">
+                    <div class="text-center max-w-5xl w-full">
+                        <i class="fa-solid fa-wand-magic-sparkles fa-4x text-cyan-400"></i>
+                        <h2 class="text-4xl md:text-6xl text-white mt-4">智能的下一个前沿：<span class="text-gradient">能动性</span></h2>
+                        <p class="text-lg md:text-xl text-slate-400 mt-2">The Next Frontier of Intelligence: Agency</p>
+                        <p class="max-w-3xl mx-auto mt-6 text-lg">定义：模型能够为了一个长期、复杂的目标，自主规划并执行一系列复杂步骤的能力。这是我们正在积极攻克的方向。</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="slide">
+                <div class="slide-content-wrapper">
+                    <div class="max-w-5xl w-full">
+                        <h2 class="text-2xl md:text-3xl text-white text-center">未来之路：必然与未知</h2>
+                        <p class="text-lg md:text-xl text-slate-400 mt-2 text-center">The Road Ahead: The Inevitable & The Unknown</p>
+                        <div class="mt-8 grid md:grid-cols-2 gap-8">
+                            <div class="p-6 bg-slate-800/50 rounded-lg"><h3 class="font-bold text-xl text-white flex items-center gap-3"><i class="fa-solid fa-gear text-cyan-400"></i>技术上的必然</h3><ul class="mt-4 space-y-2 text-slate-300 list-disc list-inside"><li>创造出能力极强的模型</li><li>发现重要的新思想</li><li>自动化海量工作</li></ul></div>
+                            <div class="p-6 bg-slate-800/50 rounded-lg"><h3 class="font-bold text-xl text-white flex items-center gap-3"><i class="fa-solid fa-users text-cyan-400"></i>社会层面的未知</h3><p class="mt-4 text-slate-300">"我们解决了超级智能，但社会可能依然糟糕。" 如何确保技术真正为社会带来价值，已成为更难的问题。</p></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="slide">
+                <div class="slide-content-wrapper">
+                    <div class="text-center max-w-5xl w-full">
+                        <div class="text-lg font-medium text-cyan-400 mb-4 tracking-widest">OPENAI'S VISION</div>
+                        <h2 class="text-4xl md:text-6xl text-white">重塑人机交互</h2>
+                        <p class="text-lg md:text-xl text-slate-400 mt-2">Reshaping Human-Computer Interaction</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="slide">
+                <div class="slide-content-wrapper">
+                    <div class="max-w-5xl w-full grid md:grid-cols-2 gap-8 items-center">
+                        <div class="text-center"><i class="fa-solid fa-user-astronaut fa-8x text-cyan-400 opacity-80"></i></div>
+                        <div>
+                            <h2 class="text-3xl md:text-5xl text-white">终极消费产品：<br><span class="text-gradient">AI 伴侣</span></h2>
+                            <p class="text-lg md:text-xl text-slate-400 mt-2">The Ultimate Consumer Product: The AI Companion</p>
+                            <ul class="mt-6 space-y-4 text-lg highlight-line">
+                                <li><strong class="text-white">形态:</strong> 存在于“以太”中的智能体，了解你的目标与偏好。</li>
+                                <li><strong class="text-white">交互:</strong> 通过所有设备为你提供无缝帮助，主动或被动。</li>
+                                <li><strong class="text-white">核心价值:</strong> 帮助你完成任何你想完成的事情。</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="slide">
+                <div class="slide-content-wrapper">
+                    <div class="max-w-5xl w-full">
+                        <h2 class="text-2xl md:text-3xl text-white text-center">突破硬件形态</h2>
+                        <p class="text-lg md:text-xl text-slate-400 mt-2 text-center">Breaking the Form Factor</p>
+                        <div class="mt-8 flex flex-col md:flex-row justify-center items-center gap-4 text-slate-500 text-center">
+                            <div class="flex items-center gap-4"><i class="fa-solid fa-keyboard fa-2x"></i><span>+</span><i class="fa-solid fa-computer-mouse fa-2x"></i><span>+</span><i class="fa-solid fa-mobile-screen-button fa-2x"></i></div>
+                            <div class="text-4xl font-thin mx-4 text-cyan-400">&rarr;</div>
+                            <div class="flex flex-col items-center"><i class="fa-solid fa-infinity fa-4x text-gradient"></i><p class="text-white mt-2">AI原生的新交互范式</p></div>
+                        </div>
+                        <p class="text-center mt-6 max-w-2xl mx-auto">过去的计算平台都<strong class="text-white">没有</strong>以AI为前提设计。一个永远在线、布满传感器、能以简单指令完成复杂任务的新设备，将彻底改变一切。</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="slide">
+                <div class="slide-content-wrapper">
+                    <div class="text-center max-w-5xl w-full">
+                        <i class="fa-solid fa-cubes-stacked fa-4x text-cyan-400"></i>
+                        <h2 class="text-4xl md:text-6xl text-white mt-4">战略支柱：<span class="text-gradient">无处不在的平台</span></h2>
+                        <p class="text-lg md:text-xl text-slate-400 mt-2">Strategic Pillar: The Ubiquitous Platform</p>
+                        <p class="max-w-3xl mx-auto mt-6 text-lg">核心理念：打造一个能够<strong class="text-white">集成一切、并被一切所集成</strong>的平台。无论你身在何处，都能获得完美、连续的AI体验。</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="slide">
+                <div class="slide-content-wrapper">
+                    <div class="max-w-5xl w-full">
+                        <h2 class="text-2xl md:text-3xl text-white text-center">“AI工厂”：构建全栈能力</h2>
+                        <p class="text-lg md:text-xl text-slate-400 mt-2 text-center">The "AI Factory": Building the Full Stack</p>
+                        <div class="mt-8 max-w-md mx-auto space-y-1">
+                            <div class="p-4 bg-slate-800/50 rounded-t-lg flex items-center gap-4"><i class="fa-solid fa-brain fa-lg text-cyan-400 w-6 text-center"></i><span class="text-white font-medium">应用接口</span></div>
+                            <div class="p-4 bg-slate-800/50 flex items-center gap-4"><i class="fa-solid fa-cubes fa-lg text-cyan-400 w-6 text-center"></i><span class="text-white font-medium">模型训练</span></div>
+                            <div class="p-4 bg-slate-800/50 flex items-center gap-4"><i class="fa-solid fa-server fa-lg text-cyan-400 w-6 text-center"></i><span class="text-white font-medium">硬件 & 数据中心</span></div>
+                            <div class="p-4 bg-slate-800/50 rounded-b-lg flex items-center gap-4"><i class="fa-solid fa-bolt fa-lg text-cyan-400 w-6 text-center"></i><span class="text-white font-medium">能源 (核聚变/裂变)</span></div>
+                        </div>
+                        <p class="text-center mt-6 text-slate-400">从产生电力的“电子”到用户查询，需要打通整个供应链。</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="slide">
+                <div class="slide-content-wrapper">
+                    <div class="max-w-5xl w-full">
+                        <h2 class="text-2xl md:text-3xl text-white text-center">关于竞争：文化与使命的较量</h2>
+                        <p class="text-lg md:text-xl text-slate-400 mt-2 text-center">On Competition: A Battle of Culture & Mission</p>
+                        <div class="mt-8 grid md:grid-cols-2 gap-8">
+                            <div class="p-6 bg-slate-800/50 rounded-lg"><h3 class="text-xl font-bold text-white flex items-center gap-3"><i class="fa-solid fa-building"></i> Meta</h3><p class="mt-3"><strong class="text-white">策略：</strong> 攻击性人才策略，以千万美元级签约奖金吸引人才。</p></div>
+                            <div class="p-6 bg-slate-800/50 rounded-lg border border-cyan-500/50 shadow-lg shadow-cyan-500/10"><h3 class="text-xl font-bold text-white flex items-center gap-3"><i class="fa-solid fa-rocket text-cyan-400"></i> OpenAI</h3><p class="mt-3"><strong class="text-white">应对：</strong> 以“实现超级智能”的使命、可重复创新的文化和成果激励来吸引和保留人才。</p></div>
+                        </div>
+                        <p class="text-center mt-6 text-slate-400">单纯复制无法建立真正的创新文化。</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="slide">
+                <div class="slide-content-wrapper">
+                    <div class="max-w-5xl w-full">
+                        <h2 class="text-2xl md:text-3xl text-white text-center">独特的创新路径</h2>
+                        <p class="text-lg md:text-xl text-slate-400 mt-2 text-center">A Unique Path to Innovation</p>
+                        <div class="mt-8 max-w-2xl mx-auto">
+                            <div class="p-4 bg-slate-800/50 rounded-lg text-center mb-6"><h3 class="text-lg font-bold text-slate-400">传统模式 <i class="fa-solid fa-times-circle text-red-500"></i></h3><p class="text-slate-500">产品公司 &rarr; 附加研究机构</p></div>
+                            <div class="p-6 bg-cyan-900/30 border border-cyan-500/50 rounded-lg text-center"><h3 class="text-xl font-bold text-white">OpenAI模式 <i class="fa-solid fa-check-circle text-cyan-400"></i></h3><p class="text-2xl text-white mt-2">顶尖研究实验室 &rarr; 建立产品公司</p></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="slide">
+                <div class="slide-content-wrapper">
+                    <div class="max-w-5xl w-full">
+                        <h2 class="text-2xl md:text-3xl text-white text-center">用户体验分野：对抗性 vs. 结盟性</h2>
+                        <p class="text-lg md:text-xl text-slate-400 mt-2 text-center">The User Experience Divide: Adversarial vs. Aligned</p>
+                        <div class="mt-8 grid md:grid-cols-2 gap-8">
+                            <div class="p-6 bg-slate-800/50 rounded-lg"><h3 class="text-xl font-bold text-white flex items-center gap-3"><i class="fa-solid fa-user-slash text-red-500"></i>对抗性技术</h3><p class="mt-3 text-slate-300">入侵你的大脑，让你沉迷、滚动、感觉更糟 (如算法推荐、无休止的通知)。</p></div>
+                            <div class="p-6 bg-slate-800/50 rounded-lg"><h3 class="text-xl font-bold text-white flex items-center gap-3"><i class="fa-solid fa-handshake-angle text-cyan-400"></i>结盟性技术</h3><p class="mt-3 text-slate-300">真诚地帮助你实现目标，让你对自己感觉更好。“唯一不让我感觉存在对抗性的科技公司。”</p></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="slide">
+                <div class="slide-content-wrapper">
+                    <div class="max-w-5xl w-full grid md:grid-cols-2 gap-8 items-center">
+                        <div>
+                            <h2 class="text-3xl md:text-5xl text-white">下一代：<br>在 <span class="text-gradient">AI 原生</span>的世界成长</h2>
+                            <p class="text-lg md:text-xl text-slate-400 mt-2">The Next Generation: Growing Up in an AI-Native World</p>
+                            <ul class="mt-6 space-y-4 text-lg highlight-line">
+                                <li><strong class="text-white">无需焦虑:</strong> 不需要为孩子应该学什么而感到根本性的改变。</li>
+                                <li><strong class="text-white">原生体验:</strong> “电脑比人聪明”将是理所当然的环境，不会感到奇怪。</li>
+                                <li><strong class="text-white">未来技能:</strong> 自然地学会流畅使用AI工具，完成不可思议的事情。</li>
+                            </ul>
+                        </div>
+                        <div class="text-center"><i class="fa-solid fa-child-reaching fa-8x text-cyan-400 opacity-80"></i></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="slide">
+                <div class="slide-content-wrapper">
+                    <div class="max-w-5xl w-full">
+                        <h2 class="text-2xl md:text-3xl text-white text-center">个人旅程：在风暴中心</h2>
+                        <p class="text-lg md:text-xl text-slate-400 mt-2 text-center">A Personal Journey: In the Eye of the Storm</p>
+                        <div class="mt-8 grid md:grid-cols-2 gap-8">
+                            <div class="p-6 bg-slate-800/50 rounded-lg"><h3 class="font-bold text-xl text-white">双重体验</h3><ul class="mt-4 space-y-2 text-slate-300 list-disc list-inside"><li><strong class="text-white">宏大叙事:</strong> 工作的使命感、历史感。</li><li><strong class="text-white">日常现实:</strong> 被动地接收和处理涌来的挑战。</li></ul></div>
+                            <div class="p-6 bg-slate-800/50 rounded-lg"><h3 class="font-bold text-xl text-white">心态变化</h3><p class="mt-4 text-slate-300">随着经历风雨，更少在意他人看法，能动性(Agency)也随之增强。</p></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div> <button id="prev-btn" class="nav-arrow"><i class="fa-solid fa-chevron-left"></i></button>
+        <button id="next-btn" class="nav-arrow"><i class="fa-solid fa-chevron-right"></i></button>
+        <div id="slide-counter">1 / 18</div>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const slidesWrapper = document.getElementById('slides-wrapper');
+            const slides = document.querySelectorAll('.slide');
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            const slideCounter = document.getElementById('slide-counter');
+            
+            let currentSlideIndex = 0;
+            const totalSlides = slides.length;
+
+            function showSlide(index) {
+                // 移动幻灯片
+                slidesWrapper.style.transform = `translateX(-${index * 100}%)`;
+
+                // 更新页码
+                slideCounter.textContent = `${index + 1} / ${totalSlides}`;
+                
+                // 更新按钮可见性
+                prevBtn.classList.toggle('hidden', index === 0);
+                nextBtn.classList.toggle('hidden', index === totalSlides - 1);
+            }
+
+            function nextSlide() {
+                if (currentSlideIndex < totalSlides - 1) {
+                    currentSlideIndex++;
+                    showSlide(currentSlideIndex);
+                }
+            }
+
+            function prevSlide() {
+                if (currentSlideIndex > 0) {
+                    currentSlideIndex--;
+                    showSlide(currentSlideIndex);
+                }
+            }
+
+            // 事件监听
+            nextBtn.addEventListener('click', nextSlide);
+            prevBtn.addEventListener('click', prevSlide);
+            
+            // 键盘导航
+            document.addEventListener('keydown', (event) => {
+                if (event.key === 'ArrowRight') {
+                    nextSlide();
+                } else if (event.key === 'ArrowLeft') {
+                    prevSlide();
+                }
+            });
+
+            // 初始化
+            showSlide(currentSlideIndex);
+        });
+    </script>
+</body>
+</html>
