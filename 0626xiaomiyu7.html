@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小米汽车发布会 - 讲义重构 v2.0</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script
+        src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0/dist/chartjs-plugin-datalabels.min.js"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;900&display=swap"
+        rel="stylesheet">
+
+    <style>
+        /* Custom Styles */
+        body {
+            font-family: 'Poppins', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background-color: #0C0C0D;
+            /* A very dark, almost black color */
+            color: #E5E7EB;
+            /* Light gray for body text */
+            overflow: hidden;
+            /* Prevent scrolling the main page */
+        }
+
+        .slide {
+            /* Positioning & Sizing */
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            padding: 1.5rem;
+            /* Padding for the outer container */
+
+            /* Flexbox for centering the inner content box */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            /* ** NEW ** Transition Effects */
+            opacity: 0;
+            transform: scale(0.97);
+            transition: opacity 0.6s ease-in-out, transform 0.6s ease-in-out;
+            pointer-events: none;
+            /* Prevent interaction with hidden slides */
+        }
+
+        .slide.active {
+            opacity: 1;
+            transform: scale(1);
+            pointer-events: auto;
+            /* Allow interaction with active slide */
+            z-index: 10;
+        }
+
+        /* ** NEW ** Inner content box with border and distinct background */
+        .slide-content {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: #111112;
+            /* Slightly lighter than body background */
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 1.5rem;
+            /* Rounded corners for the inner box */
+            padding: 2rem 4rem;
+            /* Inner padding for the content */
+            box-sizing: border-box;
+        }
+
+        /* Xiaomi-style gradient text */
+        .text-gradient {
+            background: linear-gradient(90deg, #FF6900, rgba(255, 105, 0, 0.7));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-fill-color: transparent;
+        }
+
+        /* Line-art styled list */
+        .list-styled li {
+            position: relative;
+            padding-left: 2rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .list-styled li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0.6em;
+            width: 1rem;
+            height: 2px;
+            background: #FF6900;
+            opacity: 0.8;
+        }
+
+        /* Navigation Buttons */
+        .nav-arrow {
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(41, 41, 45, 0.5);
+            color: white;
+            border-radius: 9999px;
+            width: 3rem;
+            height: 3rem;
+            font-size: 1.25rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            z-index: 50;
+        }
+
+        .nav-arrow:hover {
+            background-color: #FF6900;
+            border-color: #FF6900;
+        }
+
+        /* ** NEW ** Page Number Style */
+        #page-number {
+            position: fixed;
+            bottom: 2.5rem;
+            right: 2.5rem;
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.3);
+            z-index: 50;
+        }
+
+        /* For chart responsiveness */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 1000px;
+            height: 60vh;
+        }
+    </style>
+</head>
+
+<body>
+
+    <section id="slide-1" class="slide">
+        <div class="slide-content">
+            <div class="text-center">
+                <h2 class="text-xl md:text-3xl font-light text-gray-400 mb-8">小米汽车技术战略</h2>
+                <h1 class="text-5xl md:text-7xl font-bold mb-8">挑战纽北：<span class="text-gradient">为技术正名</span></h1>
+                <ul class="text-lg md:text-xl text-left max-w-3xl mx-auto space-y-4 list-styled">
+                    <li>小米汽车的目标是挑战并对标保时捷等世界顶尖车企。</li>
+                    <li>核心策略：在最严苛的赛道上打磨技术，再将尖端技术应用于量产车。</li>
+                    <li>为何选择纽北赛道？号称“绿色地狱”，是全球公认的最难、最考验车辆综合性能的赛道。</li>
+                </ul>
+                <!-- 背景图片样式 -->
+                <div class="absolute inset-0 z-10 overflow-hidden">
+                    <img src="https://s1.xiaomiev.com/activity-outer-assets/0328/images/su7_ultra_20250227/pc/1.jpg" alt="Background" class="w-full h-full object-cover opacity-15">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="slide-2" class="slide">
+        <div class="slide-content">
+            <div class="text-center w-full max-w-4xl">
+                <h1 class="text-4xl md:text-6xl font-bold mb-10">纽北：<span class="text-gradient">对技术能力的全方位考验</span></h1>
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-8 text-xl">
+                    <div class="border border-gray-700 p-6 rounded-lg text-center backdrop-blur-sm bg-white/5">
+                        <i class="fas fa-car-side text-3xl mb-3 text-gradient"></i>
+                        <p>底盘性能</p>
+                    </div>
+                    <div class="border border-gray-700 p-6 rounded-lg text-center backdrop-blur-sm bg-white/5">
+                        <i class="fas fa-compact-disc text-3xl mb-3 text-gradient"></i>
+                        <p>刹车系统</p>
+                    </div>
+                    <div class="border border-gray-700 p-6 rounded-lg text-center backdrop-blur-sm bg-white/5">
+                        <i class="fas fa-fan text-3xl mb-3 text-gradient"></i>
+                        <p>散热管理</p>
+                    </div>
+                    <div class="border border-gray-700 p-6 rounded-lg text-center backdrop-blur-sm bg-white/5">
+                        <i class="fas fa-shield-halved text-3xl mb-3 text-gradient"></i>
+                        <p>可靠与耐久</p>
+                    </div>
+                    <div class="border border-gray-700 p-6 rounded-lg text-center backdrop-blur-sm bg-white/5">
+                        <i class="fas fa-user-shield text-3xl mb-3 text-gradient"></i>
+                        <p>安全性</p>
+                    </div>
+                    <div
+                        class="border border-orange-600/50 p-6 rounded-lg text-center backdrop-blur-sm bg-orange-500/10">
+                        <i class="fas fa-trophy text-3xl mb-3 text-gradient"></i>
+                        <p>综合大考</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="slide-3" class="slide">
+        <div class="slide-content">
+            <div class="text-center">
+                <h2 class="text-xl md:text-3xl font-light text-gray-400 mb-2">第一步：原型车先行</h2>
+                <h1 class="text-5xl md:text-7xl font-bold mb-8">刷新认知</h1>
+                <p class="text-8xl md:text-9xl font-black my-12 text-gradient">6:46.874</p>
+                <p class="text-lg md:text-2xl max-w-3xl mx-auto">
+                    去年，仅用一圈，就创造了惊人成绩。这令人兴奋，但也留有遗憾，我们想知道第一代原型车的<span class="text-white font-semibold">真正极限</span>。
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section id="slide-4" class="slide">
+        <div class="slide-content">
+            <div class="text-center">
+                <h2 class="text-xl md:text-3xl font-light text-gray-400 mb-2">原型车新纪录</h2>
+                <h1 class="text-5xl md:text-7xl font-bold mb-8">再次刷新极限</h1>
+                <p class="text-8xl md:text-9xl font-black my-12 text-gradient">6:22.091</p>
+                <p class="text-lg md:text-2xl max-w-3xl mx-auto">
+                    经过一年准备，重返纽北。相比去年，整整提升了<span class="text-white font-semibold text-4xl"> 24秒</span>，这是极为困难的突破。
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section id="slide-5" class="slide">
+        <div class="slide-content">
+            <div class="text-center w-full">
+                <h1 class="text-4xl md:text-6xl font-bold mb-8">跻身传奇：<span class="text-gradient">纽北官方总榜全球第三</span></h1>
+                <p class="text-lg text-gray-400 mb-8 max-w-4xl mx-auto">
+                    小米SU7原型车，已成为纽北官方圈速榜总榜全球第三。我们身前只有两台传奇赛车。我们清醒认知差距，但我们已在赢的路上。</p>
+                <div class="chart-container mx-auto">
+                    <canvas id="nurburgringChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="slide-6" class="slide">
+        <div class="slide-content">
+            <div class="text-center">
+                <h2 class="text-xl md:text-3xl font-light text-gray-400 mb-2">最终目标</h2>
+                <h1 class="text-5xl md:text-7xl font-bold mb-8"><span class="text-gradient">量产车</span>挑战纽北</h1>
+                <ul class="text-lg md:text-xl text-left max-w-3xl mx-auto space-y-4 list-styled">
+                    <li>挑战车辆：小米SU7 Ultra 量产车，在标准版基础上，加装官方选装件与安全改装。</li>
+                    <li>官方认证：经过纽北官方认证，是真正的“量产车”。</li>
+                    <li>最终目的：用消费者能买到的车，来证明我们的技术实力。</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section id="slide-7" class="slide">
+        <div class="slide-content">
+            <div class="text-center">
+                <h2 class="text-xl md:text-3xl font-light text-gray-400 mb-2">刷新纪录</h2>
+                <h1 class="text-5xl md:text-7xl font-bold mb-8">史上最快<span class="text-gradient">量产电动车</span></h1>
+                <p class="text-8xl md:text-9xl font-black my-12 text-gradient">7:04.957</p>
+                <p class="text-lg md:text-2xl max-w-3xl mx-auto">
+                    超越保时捷Taycan Turbo GT，超越特斯拉Model S Plaid。小米SU7 Ultra，成为纽北历史上最快的量产电动车。
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section id="slide-8" class="slide">
+        <div class="slide-content">
+            <div class="text-center">
+                <h2 class="text-xl md:text-3xl font-light text-gray-400 mb-2">为纪录加冕</h2>
+                <h1 class="text-4xl md:text-6xl font-bold mb-4">小米SU7 Ultra <span class="text-gradient">纽北限量版</span>
+                </h1>
+                <div class="flex flex-col md:flex-row gap-8 mt-10 items-center justify-center">
+                    <div class="text-left border border-gray-700 p-6 rounded-lg backdrop-blur-sm bg-white/5">
+                        <p class="text-gray-400">限量</p>
+                        <p class="text-4xl font-bold">100<span class="text-lg font-light ml-1">台</span></p>
+                    </div>
+                    <div class="text-left border border-gray-700 p-6 rounded-lg backdrop-blur-sm bg-white/5">
+                        <p class="text-gray-400">定价</p>
+                        <p class="text-4xl font-bold">¥814,900</p>
+                    </div>
+                    <div class="text-left border border-orange-600/50 p-6 rounded-lg backdrop-blur-sm bg-orange-500/10">
+                        <p class="text-gray-400">发售</p>
+                        <p class="text-4xl font-bold">今晚10点</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="slide-9" class="slide">
+        <div class="slide-content">
+            <div class="text-center w-full max-w-5xl">
+                <h1 class="text-3xl md:text-5xl font-bold mb-10">纽北限量版配置 (1/2): <span
+                        class="text-gradient">专业赛道套装</span></h1>
+                <div class="flex justify-center w-full">
+                    <ul class="text-lg md:text-xl text-left max-w-3xl space-y-4 list-styled">
+                        <li>Bilstein（倍适登）绞牙减振器</li>
+                        <li>Endless（安德里斯）高性能赛用刹车片</li>
+                        <li>Pirelli（倍耐力）P ZERO R 高性能轮胎</li>
+                        <li class="font-bold text-white">额外附送：一套P ZERO Trofeo R 半热熔轮胎</li>
+                        <li>锻造轮毂、碳纤维车顶、碳纤维后轮眉</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="slide-10" class="slide">
+        <div class="slide-content">
+            <div class="text-center w-full max-w-5xl">
+                <h1 class="text-3xl md:text-5xl font-bold mb-10">纽北限量版配置 (2/2): <span
+                        class="text-gradient">轻量化与安全</span></h1>
+                <div class="flex justify-center w-full">
+                    <div class="grid md:grid-cols-2 gap-8 text-left text-lg max-w-3xl">
+                        <div>
+                            <h3 class="text-2xl font-bold mb-4 text-gradient">碳纤维空气动力学套件</h3>
+                            <ul class="space-y-2 list-styled pl-5">
+                                <li>双风道前舱盖</li>
+                                <li>大尾翼</li>
+                                <li>底护板</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold mb-4 text-gradient">赛道级安全改装</h3>
+                            <ul class="space-y-2 list-styled pl-5">
+                                <li>碳纤维赛车座椅 (FIA认证)</li>
+                                <li>赛用六点式安全带 (FIA认证)</li>
+                                <li>预制半幅式防滚架 (+12%扭转刚度)</li>
+                                <li>后排座椅拆除 (-30公斤)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="slide-11" class="slide">
+        <div class="slide-content">
+            <div class="text-center">
+                <h2 class="text-xl md:text-3xl font-light text-gray-400 mb-8">全球首发</h2>
+                <h1 class="text-5xl md:text-7xl font-bold mb-4">小米 YU7 (<span class="text-gradient">御风</span>)</h1>
+                <p class="text-2xl text-gray-300">一款高性能的豪华SUV</p>
+                <p class="mt-8 border border-gray-700 rounded-full px-6 py-2 text-lg">设计理念：做经得起时间考验的设计</p>
+                <!-- 背景图片样式 -->
+                <div class="absolute inset-0 z-10 overflow-hidden">
+                    <img src="https://s1.xiaomiev.com/activity-outer-assets/0328/images/yu7_20250626/pc/1.png" alt="Background" class="w-full h-full object-cover opacity-10">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="slide-12" class="slide">
+        <div class="slide-content">
+            <div class="w-full text-center">
+                <h1 class="text-4xl md:text-6xl font-bold mb-10">9款车身颜色: <span class="text-gradient">光影与质感的艺术</span>
+                </h1>
+                <div class="grid grid-cols-3 md:grid-cols-5 gap-4 max-w-5xl mx-auto">
+                    <div class="p-4 rounded-lg bg-green-700/80">
+                        <p>宝石绿</p>
+                    </div>
+                    <div class="p-4 rounded-lg bg-orange-600/80">
+                        <p>熔岩橙</p>
+                    </div>
+                    <div class="p-4 rounded-lg bg-gray-500/80">
+                        <p>钛金属色</p>
+                    </div>
+                    <div class="p-4 rounded-lg bg-gray-800/80">
+                        <p>寒武岩灰</p>
+                    </div>
+                    <div class="p-4 rounded-lg bg-blue-800/80">
+                        <p>海湾蓝</p>
+                    </div>
+                    <div class="p-4 rounded-lg bg-white/80 text-black">
+                        <p>珍珠白</p>
+                    </div>
+                    <div class="p-4 rounded-lg bg-blue-600/80">
+                        <p>深海蓝</p>
+                    </div>
+                    <div class="p-4 rounded-lg bg-purple-800/80">
+                        <p>丹霞紫</p>
+                    </div>
+                    <div class="p-4 rounded-lg bg-teal-200/80 text-black">
+                        <p>隐青色</p>
+                    </div>
+                    <div class="p-4 rounded-lg bg-pink-300/80 text-black">
+                        <p>鎏金粉</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="slide-13" class="slide">
+        <div class="slide-content">
+            <div class="text-center w-full max-w-5xl">
+                <h1 class="text-3xl md:text-5xl font-bold mb-10">内饰与空间: <span class="text-gradient">豪华、舒适、超越期待</span>
+                </h1>
+                <div class="flex justify-center w-full">
+                    <ul class="text-lg md:text-xl text-left max-w-4xl mx-auto space-y-4 list-styled">
+                        <li>新增“鸢尾紫”双色内饰，采用Nappa真皮与婴儿可接触级环保材料。</li>
+                        <li>前排可选配零重力座椅，后排靠背电动调节至135°，配备睡眠头枕。</li>
+                        <li>空间：基于1.88米模型开发，头部、膝部空间均优于Model Y及卡宴。</li>
+                        <li>储物：后备箱678L，前备箱141L，放倒后排达1758L。</li>
+                        <li class="font-bold text-white">亮点：后排座椅下方设计了抽屉式储物盒。</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="slide-14" class="slide">
+        <div class="slide-content">
+            <div class="text-center w-full max-w-4xl">
+                <h1 class="text-4xl md:text-6xl font-bold mb-10"><span class="text-gradient">为家庭出行</span>而设计</h1>
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-6 text-lg">
+                    <div class="border border-gray-700 p-4 rounded-lg bg-white/5">
+                        <p>婴儿级安全材质</p>
+                    </div>
+                    <div class="border border-gray-700 p-4 rounded-lg bg-white/5">
+                        <p>柔风空调+HEPA</p>
+                    </div>
+                    <div class="border border-gray-700 p-4 rounded-lg bg-white/5">
+                        <p>宽敞后排空间</p>
+                    </div>
+                    <div class="border border-gray-700 p-4 rounded-lg bg-white/5">
+                        <p>后排抽屉储物</p>
+                    </div>
+                    <div class="border border-gray-700 p-4 rounded-lg bg-white/5">
+                        <p>后排拓展屏</p>
+                    </div>
+                    <div class="border border-gray-700 p-4 rounded-lg bg-white/5">
+                        <p>车载智能冰箱</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="slide-15" class="slide">
+        <div class="slide-content">
+            <div class="text-center w-full max-w-5xl">
+                <h1 class="text-3xl md:text-5xl font-bold mb-10">静谧性与防晒: <span class="text-gradient">移动的舒适堡垒</span></h1>
+                <div class="flex justify-center w-full">
+                    <div class="grid md:grid-cols-2 gap-8 text-left text-lg">
+                        <div>
+                            <h3 class="text-2xl font-bold mb-4 text-gradient">静谧性 (NVH)</h3>
+                            <ul class="space-y-2 list-styled pl-5">
+                                <li>全系标配静音夹层玻璃。</li>
+                                <li>Max版升级为超静音玻璃，天幕增加隔音膜，静谧性远超同级。</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold mb-4 text-gradient">防晒隔热</h3>
+                            <ul class="space-y-2 list-styled pl-5">
+                                <li>防晒水平达 SPF 100+ / PA++++。</li>
+                                <li>Max版标配新一代EC智能调光天幕，隔热效果优于竞品。</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="slide-16" class="slide">
+        <div class="slide-content">
+            <div class="text-center w-full max-w-6xl">
+                <h1 class="text-4xl md:text-6xl font-bold mb-10">性能与续航: <span class="text-gradient">全系即旗舰</span></h1>
+                <div class="grid md:grid-cols-3 gap-8 text-lg">
+                    <div class="p-6 border border-gray-700 rounded-lg bg-white/5">
+                        <p class="text-gray-400">0-100km/h</p>
+                        <p class="text-5xl font-bold text-gradient">3.23<span
+                                class="text-lg text-gray-400 font-light ml-1">秒</span></p>
+                    </div>
+                    <div class="p-6 border border-gray-700 rounded-lg bg-white/5">
+                        <p class="text-gray-400">最长续航</p>
+                        <p class="text-5xl font-bold text-gradient">835<span
+                                class="text-lg text-gray-400 font-light ml-1">公里</span></p>
+                    </div>
+                    <div class="p-6 border border-gray-700 rounded-lg bg-white/5">
+                        <p class="text-gray-400">15分钟补能</p>
+                        <p class="text-5xl font-bold text-gradient">620<span
+                                class="text-lg text-gray-400 font-light ml-1">公里</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="slide-17" class="slide">
+        <div class="slide-content">
+            <div class="text-center">
+                <h1 class="text-4xl md:text-6xl font-bold mb-8">晕车舒缓模式</h1>
+                <p class="text-6xl md:text-8xl font-black my-10 text-gradient">-51%</p>
+                <p class="text-xl md:text-2xl max-w-3xl mx-auto">
+                    联合华山、同仁医院研发，针对性调校，有效降低<span class="text-white font-semibold">51%</span>晕车发生率。
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section id="slide-18" class="slide">
+        <div class="slide-content">
+            <div class="text-center w-full max-w-5xl">
+                <h1 class="text-4xl md:text-6xl font-bold mb-10">智能与生态: <span class="text-gradient">小米的核心优势</span></h1>
+                <div class="flex justify-center w-full">
+                <ul class="text-lg md:text-xl text-left max-w-4xl mx-auto space-y-4 list-styled">
+                    <li>核心大脑：小米自研四合一“御控”模块，高度集成，全链路能效优化。</li>
+                    <li>芯片算力：4nm座舱芯片 + 4nm NVIDIA Thor 智驾芯片。</li>
+                    <li>交互创新：小米天际屏、五音区超级小爱同学、车外语音控车。</li>
+                </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="slide-19" class="slide">
+        <div class="slide-content">
+            <div class="text-center w-full max-w-5xl">
+                <h1 class="text-3xl md:text-5xl font-bold mb-10">生态拓展: <span class="text-gradient">人车家全生态</span> &
+                    全面呵护<span class="text-white">苹果用户</span></h1>
+                <div class="flex justify-center w-full">
+                <div class="grid md:grid-cols-2 gap-8 text-left text-lg">
+                    <div>
+                        <h3 class="text-2xl font-bold mb-4 text-gradient">小米生态</h3>
+                        <ul class="space-y-2 list-styled pl-5">
+                            <li>新增27W供电螺纹接口</li>
+                            <li>9个磁吸点，支持丰富配件</li>
+                            <li>多处可拓展接口 (后视镜/座椅/顶棚)</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold mb-4 text-white">苹果生态</h3>
+                        <ul class="space-y-2 list-styled pl-5">
+                            <li>UWB无感控车、桌面小组件</li>
+                            <li>CarPlay分屏共存</li>
+                            <li>适配Apple Music/Watch/iPad</li>
+                        </ul>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="slide-20" class="slide">
+        <div class="slide-content">
+            <div class="text-center w-full max-w-5xl">
+                <h1 class="text-4xl md:text-6xl font-bold mb-10">高阶智能辅助驾驶: <span class="text-gradient">全系即顶配</span></h1>
+                <div class="flex justify-center w-full">
+                <ul class="text-lg md:text-xl text-left max-w-4xl mx-auto space-y-4 list-styled">
+                    <li>硬件全系标配：NVIDIA Thor 芯片、激光雷达、4D毫米波雷达。</li>
+                    <li>软件全系标配：端到端智驾大模型（1000万kNePs版本）。</li>
+                    <li>能力提升：加减速控制更像“老司机”，路口理解能力大幅提升。</li>
+                    <li>推送计划：YU7上市即搭载，SU7系列7月下旬升级。</li>
+                </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="slide-21" class="slide">
+        <div class="slide-content">
+            <div class="text-center w-full max-w-5xl">
+                <h1 class="text-4xl md:text-6xl font-bold mb-10">安全与质量: <span class="text-gradient">是一切的前提</span></h1>
+                <div class="flex flex-col md:flex-row gap-8 mt-10 items-center justify-center text-2xl">
+                    <div class="text-center">
+                        <p class="text-6xl font-bold text-gradient">2200<span
+                                class="text-lg text-gray-400 font-light ml-1">MPa</span></p>
+                        <p class="text-gray-400 mt-2">最高强度钢</p>
+                    </div>
+                    <div class="text-center">
+                        <p class="text-6xl font-bold text-gradient">1062<span
+                                class="text-lg text-gray-400 font-light ml-1">万公里</span></p>
+                        <p class="text-gray-400 mt-2">累计测试</p>
+                    </div>
+                    <div class="text-center">
+                        <p class="text-6xl font-bold text-gradient">3944<span
+                                class="text-lg text-gray-400 font-light ml-1">公里</span></p>
+                        <p class="text-gray-400 mt-2">24小时耐力纪录</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="slide-22" class="slide">
+        <div class="slide-content">
+            <div class="text-center w-full max-w-5xl">
+                <h1 class="text-4xl md:text-6xl font-bold mb-10">小米 YU7 vs <span class="text-gradient">Model Y</span>
+                </h1>
+                <div class="flex justify-center w-full">
+                <ul class="text-lg md:text-xl text-left max-w-4xl mx-auto space-y-4 list-styled">
+                    <li>应战宣言：特斯拉敢发战书，我们就敢应战。</li>
+                    <li>续航对比：YU7标准版 835公里 vs Model Y 长续航版 688公里 (+242公里)。</li>
+                    <li>电池对比：YU7 ~100度 vs Model Y 66度 (+33.8度)。</li>
+                    <li>硬件对比：YU7标配激光雷达、天际屏等，Model Y无。</li>
+                    <li class="font-bold text-white">结论：配置全面超越，同时承认并学习对手在能耗与FSD上的领先。</li>
+                </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="slide-23" class="slide">
+        <div class="slide-content">
+            <div class="w-full text-center max-w-6xl">
+                <h1 class="text-3xl md:text-5xl font-bold mb-10">小米 YU7 <span class="text-gradient">定价与首发权益</span></h1>
+                <div class="grid md:grid-cols-3 gap-6 text-left">
+                    <div class="p-6 border border-gray-700 rounded-lg bg-white/5 space-y-3">
+                        <h2 class="text-2xl font-bold">标准版</h2>
+                        <p class="text-4xl font-bold text-gradient">¥253,500</p>
+                        <p>835km 续航</p>
+                        <p class="text-sm text-gray-400">价值 ¥55,000 权益</p>
+                    </div>
+                    <div class="p-6 border-2 border-orange-600/80 rounded-lg bg-orange-500/10 space-y-3">
+                        <h2 class="text-2xl font-bold">Pro版 (四驱)</h2>
+                        <p class="text-4xl font-bold text-gradient">¥279,900</p>
+                        <p>770km 续航 + 空气悬架</p>
+                        <p class="text-sm text-gray-400">价值 ¥55,000 权益</p>
+                    </div>
+                    <div class="p-6 border border-gray-700 rounded-lg bg-white/5 space-y-3">
+                        <h2 class="text-2xl font-bold">Max版 (性能猛兽)</h2>
+                        <p class="text-4xl font-bold text-gradient">¥329,900</p>
+                        <p>3.23s 百公里加速</p>
+                        <p class="text-sm text-gray-400">价值 ¥66,000 权益</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="slide-24" class="slide">
+        <div class="slide-content">
+            <div class="text-center">
+                <h2 class="text-xl md:text-3xl font-light text-gray-400 mb-6">为谁设计？</h2>
+                <h1 class="text-4xl md:text-6xl font-bold mb-8 leading-normal md:leading-loose">为那些<span
+                        class="text-gradient">双肩扛着责任</span><br />内心仍有<span class="text-gradient">远方</span>的人</h1>
+                <!-- 背景图片样式 -->
+                <div class="absolute inset-0 z-10 overflow-hidden">
+                    <img src="https://s1.xiaomiev.com/activity-outer-assets/0328/images/yu7_20250522/pc/22.jpg" alt="Background" class="w-full h-full object-cover opacity-30">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="slide-25" class="slide">
+        <div class="slide-content">
+            <div class="text-center">
+                <h1 class="text-4xl md:text-6xl font-bold mb-12 leading-normal md:leading-loose">这是一封写给所有<span
+                        class="text-gradient">热爱生活的人</span><br />最深情、最硬核的情书</h1>
+                <p class="text-2xl mb-16 text-gray-400">谢谢大家</p>
+                <img src="https://s1.xiaomiev.com/activity-outer-assets/0328/images/yu7_20250522/logo-1.png"
+                    alt="Xiaomi Auto Logo" class="w-48 mb-12 mx-auto opacity-70">
+                <!-- 背景图片样式 -->
+                <div class="absolute inset-0 z-10 overflow-hidden">
+                    <img src="https://s1.xiaomiev.com/activity-outer-assets/0328/images/yu7_20250626/pc/24.png" alt="Background" class="w-full h-full object-cover opacity-30">
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <button id="prevBtn" class="nav-arrow left-4 md:left-8"><i class="fas fa-arrow-left"></i></button>
+    <button id="nextBtn" class="nav-arrow right-4 md:right-8"><i class="fas fa-arrow-right"></i></button>
+
+    <div id="page-number"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const slides = document.querySelectorAll('.slide');
+            const pageNumberEl = document.getElementById('page-number');
+            let currentSlide = 0;
+            let chartRendered = false;
+
+            function showSlide(index) {
+                // Circular navigation
+                if (index >= slides.length) {
+                    index = 0;
+                }
+                if (index < 0) {
+                    index = slides.length - 1;
+                }
+
+                slides.forEach(slide => {
+                    slide.classList.remove('active');
+                });
+
+                slides[index].classList.add('active');
+                currentSlide = index;
+
+                // ** NEW ** Update page number
+                pageNumberEl.textContent = `${index + 1} / ${slides.length}`;
+
+                // Lazy render the chart only when its slide is shown
+                if (slides[index].id === 'slide-5' && !chartRendered) {
+                    renderNurburgringChart();
+                    chartRendered = true;
+                }
+            }
+
+            // Navigation event listeners
+            document.getElementById('nextBtn').addEventListener('click', () => showSlide(currentSlide + 1));
+            document.getElementById('prevBtn').addEventListener('click', () => showSlide(currentSlide - 1));
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight' || e.key === ' ') { // Space bar also goes next
+                    e.preventDefault();
+                    showSlide(currentSlide + 1);
+                } else if (e.key === 'ArrowLeft') {
+                    showSlide(currentSlide - 1);
+                }
+            });
+
+            // Chart.js function
+            function renderNurburgringChart() {
+                const ctx = document.getElementById('nurburgringChart').getContext('2d');
+                Chart.defaults.font.family = 'Poppins';
+                Chart.defaults.color = '#E5E7EB';
+                Chart.register(ChartDataLabels);
+
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: [
+                            'Porsche 919 Evo',
+                            'VW ID.R',
+                            'Xiaomi SU7 Prototype (New)',
+                            'Xiaomi SU7 Prototype (Old)',
+                            'Xiaomi SU7 Ultra (Production)'
+                        ],
+                        datasets: [{
+                            label: '圈速 (秒)',
+                            data: [319.546, 365.336, 382.091, 406.874, 424.957],
+                            backgroundColor: [
+                                'rgba(156, 163, 175, 0.5)',
+                                'rgba(156, 163, 175, 0.5)',
+                                'rgba(255, 105, 0, 0.8)',
+                                'rgba(255, 105, 0, 0.5)',
+                                'rgba(255, 105, 0, 0.5)'
+                            ],
+                            borderColor: [
+                                'rgba(156, 163, 175, 1)',
+                                'rgba(156, 163, 175, 1)',
+                                'rgba(255, 105, 0, 1)',
+                                'rgba(255, 105, 0, 1)',
+                                'rgba(255, 105, 0, 1)'
+                            ],
+                            borderWidth: 1,
+                            borderRadius: 4
+                        }]
+                    },
+                    options: {
+                        indexAxis: 'y',
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            datalabels: {
+                                anchor: 'end',
+                                align: 'end',
+                                color: '#E5E7EB',
+                                font: {
+                                    weight: 'bold'
+                                },
+                                formatter: function (value, context) {
+                                    let minutes = Math.floor(value / 60);
+                                    let remainingSeconds = (value % 60).toFixed(3);
+                                    return `${minutes}:${remainingSeconds.padStart(6, '0')}`;
+                                }
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function (context) {
+                                        let seconds = context.raw;
+                                        let minutes = Math.floor(seconds / 60);
+                                        let remainingSeconds = (seconds % 60).toFixed(3);
+                                        return `${minutes}:${remainingSeconds.padStart(6, '0')}`;
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                beginAtZero: true,
+                                grid: {
+                                    color: 'rgba(255, 255, 255, 0.1)'
+                                },
+                                ticks: {
+                                    color: '#E5E7EB',
+                                    callback: function (value) {
+                                        return value + 's';
+                                    }
+                                }
+                            },
+                            y: {
+                                grid: {
+                                    display: false
+                                },
+                                ticks: {
+                                    color: '#E5E7EB',
+                                    font: {
+                                        size: 14
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Show the first slide initially
+            showSlide(0);
+        });
+    </script>
+</body>
+
+</html>
