@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>倩子·大健康IP商业模式终极调研报告</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* ==========================================================================
+           温度感与人性化主题配置 (Warm & Humane Theme)
+           ========================================================================== */
+        :root {
+            --bg-body: #f9f8f6; 
+            --bg-card: #ffffff;
+            
+            --text-main: #3d3835;
+            --text-muted: #7a736e;
+            --text-light: #a39c97;
+            
+            --color-terracotta: #c46d53; /* 温暖赤陶色 */
+            --color-sage: #7d9078;       /* 鼠尾草绿 */
+            --color-ochre: #d69c52;      /* 秋霞黄 */
+            --color-sand: #e6e2d8;       /* 沙色 */
+            
+            --radius-lg: 24px;
+            --radius-md: 16px;
+            --shadow-soft: 0 8px 24px rgba(138, 125, 115, 0.06);
+            --shadow-hover: 0 16px 40px rgba(196, 109, 83, 0.12);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+            -webkit-overflow-scrolling: touch; /* iOS丝滑滚动 */
+            padding-bottom: 60px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        /* 页头 */
+        header {
+            text-align: center;
+            padding: 60px 15px 40px;
+            position: relative;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 250px;
+            background: linear-gradient(to bottom, #f0eae1, var(--bg-body));
+            z-index: -1;
+        }
+
+        .report-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background-color: var(--color-sand);
+            color: var(--color-terracotta);
+            font-size: 0.85rem;
+            font-weight: 600;
+            padding: 6px 18px;
+            border-radius: 30px;
+            margin-bottom: 24px;
+        }
+
+        h1 {
+            font-size: 2rem;
+            color: #2c2825;
+            font-weight: 800;
+            margin-bottom: 16px;
+            line-height: 1.3;
+        }
+
+        .subtitle {
+            font-size: 1.05rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* 章节标题 */
+        .section-header {
+            margin: 50px 0 25px;
+            text-align: center;
+        }
+
+        .section-header h2 {
+            font-size: 1.5rem;
+            color: var(--color-terracotta);
+            position: relative;
+            display: inline-block;
+            font-weight: 700;
+        }
+
+        .section-header h2::after {
+            content: '';
+            display: block;
+            width: 30px;
+            height: 4px;
+            background-color: var(--color-ochre);
+            margin: 10px auto 0;
+            border-radius: 2px;
+        }
+
+        /* 通用卡片 */
+        .card {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            padding: 35px;
+            box-shadow: var(--shadow-soft);
+            margin-bottom: 25px;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;
+            border: 1px solid rgba(230, 226, 216, 0.6);
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            color: #2c2825;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+        }
+
+        .card-title i { color: var(--color-sage); font-size: 1.3rem; }
+        .highlight-text { color: var(--color-terracotta); font-weight: 600; }
+
+        /* ==========================================================================
+           用户穷举编号列表 (Numbered Lists)
+           ========================================================================== */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+
+        .list-group { margin-bottom: 24px; }
+        .list-title {
+            font-weight: 700;
+            color: var(--color-sage);
+            margin-bottom: 12px;
+            font-size: 1rem;
+            border-bottom: 1px solid var(--color-sand);
+            padding-bottom: 8px;
+        }
+
+        .num-list { display: flex; flex-direction: column; gap: 12px; }
+        
+        .num-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .num-badge {
+            background-color: #f0e9df;
+            color: var(--color-ochre);
+            font-weight: 800;
+            font-size: 0.85rem;
+            min-width: 26px;
+            height: 26px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-top: 2px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .num-item.highlight .num-badge {
+            background-color: var(--color-terracotta);
+            color: white;
+            box-shadow: 0 3px 6px rgba(196, 109, 83, 0.3);
+        }
+        
+        .num-item p {
+            font-size: 0.95rem;
+            margin: 0;
+            color: var(--text-main);
+            line-height: 1.5;
+        }
+
+        .ideology-box {
+            background-color: #fcfaf8;
+            border-left: 4px solid var(--color-ochre);
+            padding: 16px 20px;
+            border-radius: 0 var(--radius-md) var(--radius-md) 0;
+            margin-bottom: 12px;
+        }
+
+        .ideology-box h4 {
+            color: var(--color-terracotta);
+            margin-bottom: 4px;
+            font-size: 1rem;
+        }
+        .ideology-box p { font-size: 0.9rem; color: var(--text-muted); }
+
+        /* ==========================================================================
+           四象限矩阵
+           ========================================================================== */
+        .quadrant-wrapper {
+            position: relative;
+            margin: 40px auto 60px;
+            max-width: 800px;
+            padding: 30px;
+            background: #fff;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-soft);
+        }
+
+        .quadrant-bg {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            gap: 15px;
+            position: relative;
+        }
+
+        /* 桌面端坐标轴 (修复了文字重叠问题) */
+        .axis-y {
+            position: absolute; left: -45px; top: 0; bottom: 0;
+            display: flex; flex-direction: column; justify-content: space-between; align-items: center;
+            width: 30px;
+        }
+        .axis-y span {
+            writing-mode: vertical-rl;
+            color: var(--text-light); font-size: 0.9rem; font-weight: 600; letter-spacing: 2px;
+        }
+        
+        .axis-x {
+            position: absolute; bottom: -40px; left: 0; right: 0;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .axis-x span {
+            color: var(--text-light); font-size: 0.9rem; font-weight: 600;
+        }
+
+        .axis-line-y {
+            position: absolute; left: 50%; top: 0; bottom: 0; width: 2px;
+            background-color: var(--color-sand); transform: translateX(-50%); z-index: 1;
+        }
+        .axis-line-x {
+            position: absolute; top: 50%; left: 0; right: 0; height: 2px;
+            background-color: var(--color-sand); transform: translateY(-50%); z-index: 1;
+        }
+
+        .q-cell {
+            padding: 24px;
+            border-radius: var(--radius-md);
+            position: relative;
+            z-index: 2;
+        }
+
+        .q-1 { background-color: rgba(196, 109, 83, 0.06); border: 1px solid rgba(196, 109, 83, 0.15); }
+        .q-2 { background-color: rgba(214, 156, 82, 0.06); border: 1px solid rgba(214, 156, 82, 0.15); }
+        .q-3 { background-color: #f7f9f7; border: 1px solid #eaecea; }
+        .q-4 { background-color: #fcfcfb; border: 1px solid #f0eee9; }
+
+        .q-cell h4 { color: #2c2825; margin-bottom: 6px; font-size: 1.05rem; }
+        .q-cell p { font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; }
+
+        .q-badge {
+            display: inline-block; font-size: 0.75rem; padding: 3px 8px;
+            border-radius: 4px; margin-bottom: 10px; font-weight: 600;
+        }
+        .badge-red { background: var(--color-terracotta); color: white; }
+        .badge-gold { background: var(--color-ochre); color: white; }
+        .badge-gray { background: #b0a8a3; color: white; }
+
+        /* ==========================================================================
+           漏斗节点
+           ========================================================================== */
+        .funnel-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .funnel-step {
+            display: flex;
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-soft);
+            overflow: hidden;
+            border: 1px solid rgba(230, 226, 216, 0.6);
+        }
+
+        .funnel-number {
+            background-color: var(--color-sage);
+            color: white;
+            width: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            font-weight: 800;
+            flex-shrink: 0;
+        }
+
+        .step-2 .funnel-number { background-color: var(--color-ochre); }
+        .step-3 .funnel-number { background-color: var(--color-terracotta); }
+
+        .funnel-content {
+            padding: 25px 30px;
+            flex-grow: 1;
+        }
+
+        .funnel-content h3 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: #2c2825;
+        }
+
+        .funnel-detail {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+            background: #fdfcfb;
+            padding: 15px;
+            border-radius: 12px;
+            border-left: 4px solid var(--color-ochre);
+        }
+
+        .funnel-detail.split {
+            flex-direction: column;
+            gap: 10px;
+            background: transparent;
+            padding: 0;
+            border: none;
+        }
+
+        .split-item {
+            background: #fdfcfb;
+            padding: 15px;
+            border-radius: 12px;
+            border-left: 4px solid var(--color-sand);
+        }
+
+        .split-item h4 { font-size: 0.95rem; margin-bottom: 6px; color: var(--text-main); }
+        .split-item p { font-size: 0.9rem; color: var(--text-muted); }
+
+        .stat-box {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        .stat-item {
+            background: rgba(214, 156, 82, 0.08);
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .stat-item strong {
+            display: block;
+            font-size: 1.2rem;
+            color: var(--color-terracotta);
+            line-height: 1.2;
+        }
+        .stat-item span { font-size: 0.8rem; color: var(--text-muted); }
+
+        /* ==========================================================================
+           护城河
+           ========================================================================== */
+        .moat-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .moat-card {
+            background: var(--bg-card);
+            padding: 30px 25px;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-soft);
+            text-align: center;
+            border-top: 4px solid var(--color-sand);
+            transition: transform 0.3s;
+        }
+
+        .moat-card:hover {
+            transform: translateY(-4px);
+            border-top-color: var(--color-terracotta);
+        }
+
+        .moat-icon {
+            width: 56px;
+            height: 56px;
+            background: #fdf8f6;
+            color: var(--color-terracotta);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            margin: 0 auto 16px;
+        }
+
+        .moat-card h3 { font-size: 1.1rem; margin-bottom: 12px; color: #2c2825; }
+        .moat-card p { font-size: 0.9rem; color: var(--text-muted); text-align: left; }
+
+        /* ==========================================================================
+           极佳的移动端响应式 (Mobile Responsiveness)
+           ========================================================================== */
+        @media (max-width: 768px) {
+            header { padding: 40px 15px 30px; }
+            h1 { font-size: 1.7rem; }
+            .subtitle { font-size: 0.95rem; }
+            
+            .card { padding: 25px 20px; border-radius: 20px; }
+            .grid-2 { grid-template-columns: 1fr; gap: 24px; }
+
+            /* 四象限在手机端的优雅堆叠 */
+            .quadrant-wrapper { padding: 0; background: transparent; box-shadow: none; margin: 20px 0; }
+            .axis-y, .axis-x, .axis-line-y, .axis-line-x { display: none; }
+            .quadrant-bg { display: flex; flex-direction: column; gap: 15px; }
+            .q-cell { padding: 20px; box-shadow: var(--shadow-soft); background: var(--bg-card); border-radius: 16px; }
+            
+            /* 漏斗手机端优化 */
+            .funnel-step { flex-direction: column; border-radius: 20px; }
+            .funnel-number { width: 100%; height: auto; padding: 12px 0; font-size: 1.3rem; }
+            .funnel-content { padding: 20px; }
+            .stat-box { grid-template-columns: 1fr; }
+
+            .moat-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <div class="report-tag"><i class="fa-solid fa-file-shield"></i> 核心商业机密拆解</div>
+        <h1>倩子·大健康IP商业模式<br>全景漏斗与底层逻辑</h1>
+        <p class="subtitle">剔除理论幻想，直击成交本质。这是一场针对转型焦虑的精准收割局。</p>
+    </header>
+
+    <!-- 模块一：核心生意本质 -->
+    <section>
+        <div class="section-header">
+            <h2>一、 核心生意的本质</h2>
+        </div>
+        <div class="card">
+            <div class="card-title"><i class="fa-solid fa-crosshairs"></i> 一场“极易爆雷”的精准收割局</div>
+            <p>撕开“教人做个人IP”的光鲜外衣，这门生意根本不是在做长期的知识教育，而是精准盯准了以下两种极端需求：</p>
+            <br>
+            <div class="grid-2">
+                <div class="ideology-box">
+                    <h4><i class="fa-solid fa-pills"></i> 卖“救命药”（针对内行）</h4>
+                    <p>对传统渠道瘫痪的大B老板，卖的是<span class="highlight-text">“线上引流外挂”</span>，是拯救其濒死代理盘子的最后希望。</p>
+                </div>
+                <div class="ideology-box">
+                    <h4><i class="fa-solid fa-ticket-alt"></i> 卖“入场券”（针对外行）</h4>
+                    <p>对外行老板，卖的是大健康<span class="highlight-text">“轻资产、80%高毛利”</span>的暴利幻觉，是一套空手套白狼的模型。</p>
+                </div>
+            </div>
+            <p style="margin-top: 15px; font-size: 0.9rem; color: var(--text-light);"><i class="fa-solid fa-triangle-exclamation"></i> <strong>爆雷隐患：</strong> 极度依赖前端重金买量，后端交付成功率极低。完全靠高压逼单与霸王免责合同强行锁润，一旦流量成本倒挂即面临崩盘。</p>
+        </div>
+    </section>
+
+    <!-- 模块二：用户人群全景图 -->
+    <section>
+        <div class="section-header">
+            <h2>二、 用户全景画像与底层需求</h2>
+        </div>
+        
+        <!-- 四象限矩阵 -->
+        <div class="quadrant-wrapper">
+            <div class="axis-y"><span>高净值/大老板</span><span>底层打工/小白</span></div>
+            <div class="axis-x"><span>80% 圈内从业者</span><span>20% 圈外跨界者</span></div>
+            <div class="axis-line-y"></div>
+            <div class="axis-line-x"></div>
+            
+            <div class="quadrant-bg">
+                <div class="q-cell q-1">
+                    <span class="q-badge badge-red">10万绝对主力</span>
+                    <h4>Q1: 圈内大B</h4>
+                    <p>直销/微商大团队长。传统渠道死局，掏10万买线上招商与获客重构。<strong>刚需中的刚需。</strong></p>
+                </div>
+                <div class="q-cell q-2">
+                    <span class="q-badge badge-gold">10万优质新贵</span>
+                    <h4>Q2: 圈外大老板</h4>
+                    <p>大厂高管、跨界老板。带资进组，图暴利与社交尊严，买的是交钥匙的代运营。</p>
+                </div>
+                <div class="q-cell q-3">
+                    <span class="q-badge badge-gray">3980元气氛组</span>
+                    <h4>Q3: 圈内底层手艺人</h4>
+                    <p>个体营养师、打工教练。极度内卷，付不起10万，花小钱病急乱投医，纯粹的垫脚石与气氛组。</p>
+                </div>
+                <div class="q-cell q-4">
+                    <span class="q-badge badge-gray">底层纯分母</span>
+                    <h4>Q4: 圈外纯小白</h4>
+                    <p>被“月入十万”洗脑进来的韭菜。没钱没资源，纯粹的陪跑分母。</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title"><i class="fa-solid fa-list-ol"></i> 人群底层穷举 (全编号版)</div>
+            <div class="grid-2">
+                <!-- 左列：80% 圈内人 -->
+                <div>
+                    <h3 style="color: var(--color-terracotta); margin-bottom: 16px; font-size: 1.1rem;">80% 圈内人 (寻找救命药)</h3>
+                    
+                    <div class="list-group">
+                        <div class="list-title">派系一：重资产实体 (被房租绑架图拓客)</div>
+                        <div class="num-list">
+                            <div class="num-item"><div class="num-badge">1</div><p>传统中医理疗/养生馆老板</p></div>
+                            <div class="num-item"><div class="num-badge">2</div><p>女性产康与月子中心老板</p></div>
+                            <div class="num-item"><div class="num-badge">3</div><p>轻医美与抗衰皮肤管理老板</p></div>
+                            <div class="num-item"><div class="num-badge">4</div><p>形体与运动健康(瑜伽普拉提)</p></div>
+                        </div>
+                    </div>
+                    
+                    <div class="list-group">
+                        <div class="list-title">派系二：产品销售 (被库存压垮图招商)</div>
+                        <div class="num-list">
+                            <div class="num-item highlight"><div class="num-badge">5</div><p><strong>传统直销与微商团队长(主力)</strong></p></div>
+                            <div class="num-item"><div class="num-badge">6</div><p>药食同源与滋补品源头工厂</p></div>
+                            <div class="num-item"><div class="num-badge">7</div><p>健康智能硬件老板</p></div>
+                        </div>
+                    </div>
+
+                    <div class="list-group">
+                        <div class="list-title">派系三：知识变现 (变现效率低图高客单)</div>
+                        <div class="num-list">
+                            <div class="num-item"><div class="num-badge">8</div><p>体制外名医与私立专科</p></div>
+                            <div class="num-item"><div class="num-badge">9</div><p>营养干预与慢病管理(个体营养师)</p></div>
+                            <div class="num-item"><div class="num-badge">10</div><p>身心疗愈与能量玄学导师</p></div>
+                        </div>
+                    </div>
+
+                    <div class="list-group">
+                        <div class="list-title">派系四：下沉市场 (会销被严打图线上洗脑)</div>
+                        <div class="num-list">
+                            <div class="num-item"><div class="num-badge">11</div><p>中老年保健体验店</p></div>
+                            <div class="num-item"><div class="num-badge">12</div><p>慢病特膳食品推销者</p></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 右列：20% 圈外人 & 思想分类 -->
+                <div>
+                    <h3 style="color: var(--color-ochre); margin-bottom: 16px; font-size: 1.1rem;">20% 圈外人 (寻找暴利入场券)</h3>
+                    <div class="list-group">
+                        <div class="num-list">
+                            <div class="num-item"><div class="num-badge" style="background:#e6e2d8; color:var(--text-main);">1</div><p><strong>亏怕了的传统老板：</strong>图大健康无门店、空手套白狼的轻资产模式。</p></div>
+                            <div class="num-item"><div class="num-badge" style="background:#e6e2d8; color:var(--text-main);">2</div><p><strong>被优化的前职场精英/老师：</strong>拿补偿金，图换个合法讲台降维收割小白。</p></div>
+                            <div class="num-item"><div class="num-badge" style="background:#e6e2d8; color:var(--text-main);">3</div><p><strong>卖不动货的带货网红/老微商：</strong>图大健康低退货率与成瘾性复购的暴利。</p></div>
+                            <div class="num-item"><div class="num-badge" style="background:#e6e2d8; color:var(--text-main);">4</div><p><strong>买仙气的富贵闲人/阔太：</strong>不差钱，图买一个“疗愈女神/主理人”的社交面具。</p></div>
+                        </div>
+                    </div>
+
+                    <h3 style="color: var(--color-sage); margin: 35px 0 16px; font-size: 1.1rem;">会场统一思想性分类</h3>
+                    <div class="ideology-box" style="border-left-color: var(--color-terracotta);">
+                        <h4>1. 绝望的“求生者”</h4>
+                        <p>传统盘子快死，将其视为唯一救命稻草（内行大B居多）。</p>
+                    </div>
+                    <div class="ideology-box">
+                        <h4>2. 贪婪的“投机者”</h4>
+                        <p>被80%毛利吸引，妄图买全自动外挂抢钱（外行新贵居多）。</p>
+                    </div>
+                    <div class="ideology-box" style="border-left-color: #a39c97;">
+                        <h4>3. 迷茫的“跟风者”</h4>
+                        <p>焦虑但没大钱，完全沦为气氛组分母。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 模块三：转化漏斗 -->
+    <section>
+        <div class="section-header">
+            <h2>三、 商业转化漏斗</h2>
+        </div>
+        
+        <div class="funnel-container">
+            <!-- Node 1 -->
+            <div class="funnel-step step-1">
+                <div class="funnel-number">01</div>
+                <div class="funnel-content">
+                    <h3>线上发售公开课 (重金投流，宽网捕捞)</h3>
+                    <p style="margin-bottom:12px; color:var(--text-muted);">核心动作：平台重金投放信息流广告，用刺眼标签洗入意向粉。</p>
+                    <div class="funnel-detail split">
+                        <div class="split-item" style="border-left-color: var(--color-ochre);">
+                            <h4><i class="fa-regular fa-eye"></i> 打圈外人 (造幻觉)</h4>
+                            <p>海报主打“蓝海赛道”、“从0启动”、“单月破十万”。制造无门槛傻瓜式暴利的错觉。</p>
+                        </div>
+                        <div class="split-item" style="border-left-color: var(--color-sage);">
+                            <h4><i class="fa-solid fa-bullseye"></i> 打圈内人 (戳痛点)</h4>
+                            <p>海报主打“精准获客闭环”、“爆款公式”。传递有标准SOP能直接抄袭救店的信号。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Node 2 -->
+            <div class="funnel-step step-2">
+                <div class="funnel-number">02</div>
+                <div class="funnel-content">
+                    <h3>3980元线下课 (验资提纯，建立高压场域)</h3>
+                    <p>异地奔赴绝不是为了听课，这3980元是<strong>“买底牌的过路费”</strong>。客户为的是当面拿走见光死的脚本、私域话术及对接代工厂。同时，线下封闭环境制造出“全中国都在抢红利”的极度恐慌感。</p>
+                    <div class="stat-box">
+                        <div class="stat-item" style="background: rgba(125, 144, 120, 0.08);">
+                            <strong>75%</strong>
+                            <span>圈内从业者报名比例</span>
+                        </div>
+                        <div class="stat-item">
+                            <strong>25%</strong>
+                            <span>圈外找方向报名比例</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Node 3 -->
+            <div class="funnel-step step-3">
+                <div class="funnel-number">03</div>
+                <div class="funnel-content">
+                    <h3>10万全案陪跑 (精准过滤与高压收割)</h3>
+                    <p>漏斗的最核心终局。在此节点，<strong style="color: var(--color-terracotta);">不存在所谓的中客单价缓冲（如理论上的陪跑群等产物）</strong>，而是极其残酷的精准筛选。只成交能付得起10万的大B客户，其余掏不出钱的底层打工人和小白，则纯粹沦为垫脚石与气氛分母。</p>
+                    <div class="funnel-detail" style="border-left-color: var(--color-terracotta);">
+                        <div>
+                            <h4 style="color: var(--color-terracotta); margin-bottom:12px; font-size: 1.05rem;"><i class="fa-solid fa-crown"></i> 10万买单者真实分布：</h4>
+                            <p style="margin-bottom: 6px;"><strong>70%</strong> 直销/微商大团队长（绝对主力，有钱有货痛点深）</p>
+                            <p style="margin-bottom: 6px;"><strong>20%</strong> 带资入局的跨界精英</p>
+                            <p><strong>10%</strong> 走投无路的实体大老板</p>
+                            <p style="color:var(--text-muted); font-size:0.85rem; margin-top:12px; background: rgba(0,0,0,0.03); padding: 8px 12px; border-radius: 6px;">*注：实体店打工专业人士、从0到1的纯小白，付费10万的比例为 0。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 模块四：三大护城河 -->
+    <section>
+        <div class="section-header">
+            <h2>四、 极度隐蔽的三大“护城河”</h2>
+        </div>
+        
+        <div class="moat-grid">
+            <div class="moat-card">
+                <div class="moat-icon"><i class="fa-solid fa-money-bill-wave"></i></div>
+                <h3>1. 命脉：重金投流洗盘</h3>
+                <p>绝非自然流量。前端必须重度依赖信息流广告（千川/聚光）去硬砸。洗出高净值线索买量成本极高，这是一场纯粹的资本算账游戏。</p>
+            </div>
+            <div class="moat-card">
+                <div class="moat-icon"><i class="fa-solid fa-user-secret"></i></div>
+                <h3>2. 杀器：物理逼单机制</h3>
+                <p>10万大单从不是听课感动的。线下必定安插“1对1影子杀手”。在最后半天，通过贴身算账、制造限额压迫感，强行按住客户刷卡。</p>
+            </div>
+            <div class="moat-card">
+                <div class="moat-icon"><i class="fa-solid fa-file-shield"></i></div>
+                <h3>3. 防弹衣：霸王免责合同</h3>
+                <p>《陪跑合同》是防范爆雷的法宝：<br>
+                • 不承诺必然商业结果，怪客户执行力。<br>
+                • 定性虚拟服务，一经开始概不退款。<br>
+                • 用“拍3条视频”等廉价过程指标糊弄。<br>
+                • 将核心价值拆分为不担责的赠品。</p>
+            </div>
+        </div>
+    </section>
+
+</div>
+
+</body>
+</html>
