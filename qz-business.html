@@ -275,8 +275,21 @@
         .q-3 { background-color: #f7f9f7; border: 1px solid #eaecea; }
         .q-4 { background-color: #fcfcfb; border: 1px solid #f0eee9; }
 
-        .q-cell h4 { color: #2c2825; margin-bottom: 6px; font-size: 1.05rem; }
-        .q-cell p { font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; }
+        .q-cell h4 { color: #2c2825; margin-bottom: 12px; font-size: 1.05rem; }
+        
+        .q-desc p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+            margin-bottom: 6px;
+        }
+        .q-desc p:last-child {
+            margin-bottom: 0;
+        }
+        .q-desc strong {
+            color: var(--text-main);
+            font-weight: 600;
+        }
 
         .q-badge {
             display: inline-block; font-size: 0.75rem; padding: 3px 8px;
@@ -493,23 +506,39 @@
             <div class="quadrant-bg">
                 <div class="q-cell q-1">
                     <span class="q-badge badge-red">10万绝对主力</span>
-                    <h4>Q1: 圈内大B</h4>
-                    <p>直销/微商大团队长。传统渠道死局，掏10万买线上招商与获客重构。<strong>刚需中的刚需。</strong></p>
+                    <h4>Q1: 圈内大B (高净值)</h4>
+                    <div class="q-desc">
+                        <p><strong>实际付款者：</strong>直销/微商大团队长、实体老板</p>
+                        <p><strong>理论潜在盘：</strong>重资产实体老板(中医/医美/产康)、供应链厂长、私立专科名医</p>
+                        <p style="margin-top: 8px;"><strong>核心需求：</strong>传统渠道死局，掏10万买线上招商与同城获客重构。刚需中的刚需。</p>
+                    </div>
                 </div>
                 <div class="q-cell q-2">
                     <span class="q-badge badge-gold">10万优质新贵</span>
-                    <h4>Q2: 圈外大老板</h4>
-                    <p>大厂高管、跨界老板。带资进组，图暴利与社交尊严，买的是交钥匙的代运营。</p>
+                    <h4>Q2: 圈外大老板 (高净值)</h4>
+                    <div class="q-desc">
+                        <p><strong>实际付款者：</strong>无</p>
+                        <p><strong>理论潜在盘：</strong>大厂高管、跨界实体老板、流量见顶的老网红、买仙气的富贵阔太</p>
+                        <p style="margin-top: 8px;"><strong>核心需求：</strong>带资进组，图暴利与社交尊严，买的是空手套白狼的代运营系统。</p>
+                    </div>
                 </div>
                 <div class="q-cell q-3">
                     <span class="q-badge badge-gray">3980元气氛组</span>
-                    <h4>Q3: 圈内底层手艺人</h4>
-                    <p>个体营养师、打工教练。极度内卷，付不起10万，花小钱病急乱投医，纯粹的垫脚石与气氛组。</p>
+                    <h4>Q3: 圈内小B (底层手艺人)</h4>
+                    <div class="q-desc">
+                        <p><strong>实际付款者：</strong>个体营养师、打工教练</p>
+                        <p><strong>理论潜在盘：</strong>基层护士、身心疗愈初级者、会销推销员</p>
+                        <p style="margin-top: 8px;"><strong>核心需求：</strong>极度内卷，付不起10万。花小钱病急乱投医，纯粹的垫脚石与气氛组。</p>
+                    </div>
                 </div>
                 <div class="q-cell q-4">
                     <span class="q-badge badge-gray">底层纯分母</span>
-                    <h4>Q4: 圈外纯小白</h4>
-                    <p>被“月入十万”洗脑进来的韭菜。没钱没资源，纯粹的陪跑分母。</p>
+                    <h4>Q4: 圈外纯小白 (底层跟风)</h4>
+                    <div class="q-desc">
+                        <p><strong>实际付款者：</strong>负债宝妈、职场小白</p>
+                        <p><strong>理论潜在盘：</strong>找副业的普通职员、盲目跟风的韭菜</p>
+                        <p style="margin-top: 8px;"><strong>核心需求：</strong>被“月入十万”洗脑进来。没钱没资源，没有任何可能付10万的陪跑分母。</p>
+                    </div>
                 </div>
             </div>
         </div>
