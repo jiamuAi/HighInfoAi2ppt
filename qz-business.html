@@ -21,6 +21,7 @@
             --color-sage: #7d9078;       /* 鼠尾草绿 */
             --color-ochre: #d69c52;      /* 秋霞黄 */
             --color-sand: #e6e2d8;       /* 沙色 */
+            --color-alert: #e53e3e;      /* 警示红 */
             
             --radius-lg: 24px;
             --radius-md: 16px;
@@ -36,7 +37,7 @@
             color: var(--text-main);
             line-height: 1.7;
             -webkit-font-smoothing: antialiased;
-            -webkit-overflow-scrolling: touch; /* iOS丝滑滚动 */
+            -webkit-overflow-scrolling: touch;
             padding-bottom: 60px;
         }
 
@@ -144,60 +145,62 @@
         .highlight-text { color: var(--color-terracotta); font-weight: 600; }
 
         /* ==========================================================================
-           用户穷举编号列表 (Numbered Lists)
+           核心本质：三栏指标卡片
            ========================================================================== */
-        .grid-2 {
+        .essence-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 25px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .essence-box {
+            background: #fdfdfc;
+            border: 1px solid var(--color-sand);
+            border-top: 4px solid var(--color-ochre);
+            padding: 20px 15px;
+            border-radius: 12px;
+        }
+        
+        .essence-box:nth-child(2) { border-top-color: var(--color-terracotta); }
+        .essence-box:nth-child(3) { border-top-color: var(--color-sage); }
+
+        .essence-box h4 {
+            font-size: 1rem;
+            color: #2c2825;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .essence-box p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.6;
         }
 
+        /* ==========================================================================
+           用户穷举编号列表
+           ========================================================================== */
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; }
         .list-group { margin-bottom: 24px; }
         .list-title {
-            font-weight: 700;
-            color: var(--color-sage);
-            margin-bottom: 12px;
-            font-size: 1rem;
-            border-bottom: 1px solid var(--color-sand);
-            padding-bottom: 8px;
+            font-weight: 700; color: var(--color-sage); margin-bottom: 12px;
+            font-size: 1rem; border-bottom: 1px solid var(--color-sand); padding-bottom: 8px;
         }
 
         .num-list { display: flex; flex-direction: column; gap: 12px; }
-        
-        .num-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 12px;
-        }
-
+        .num-item { display: flex; align-items: flex-start; gap: 12px; }
         .num-badge {
-            background-color: #f0e9df;
-            color: var(--color-ochre);
-            font-weight: 800;
-            font-size: 0.85rem;
-            min-width: 26px;
-            height: 26px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            margin-top: 2px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            background-color: #f0e9df; color: var(--color-ochre); font-weight: 800;
+            font-size: 0.85rem; min-width: 26px; height: 26px; border-radius: 8px;
+            display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+            margin-top: 2px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);
         }
-
-        .num-item.highlight .num-badge {
-            background-color: var(--color-terracotta);
-            color: white;
-            box-shadow: 0 3px 6px rgba(196, 109, 83, 0.3);
-        }
-        
-        .num-item p {
-            font-size: 0.95rem;
-            margin: 0;
-            color: var(--text-main);
-            line-height: 1.5;
-        }
+        .num-item.highlight .num-badge { background-color: var(--color-terracotta); color: white; }
+        .num-item p { font-size: 0.95rem; margin: 0; color: var(--text-main); line-height: 1.5; }
+        .num-item p span.desc { display: block; font-size: 0.85rem; color: var(--text-muted); margin-top: 2px; }
 
         .ideology-box {
             background-color: #fcfaf8;
@@ -218,156 +221,65 @@
            四象限矩阵
            ========================================================================== */
         .quadrant-wrapper {
-            position: relative;
-            margin: 40px auto 60px;
-            max-width: 800px;
-            padding: 30px;
-            background: #fff;
-            border-radius: var(--radius-lg);
-            box-shadow: var(--shadow-soft);
+            position: relative; margin: 40px auto 60px; max-width: 800px;
+            padding: 30px; background: #fff; border-radius: var(--radius-lg); box-shadow: var(--shadow-soft);
         }
+        .quadrant-bg { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 15px; position: relative; }
+        .axis-y { position: absolute; left: -45px; top: 0; bottom: 0; display: flex; flex-direction: column; justify-content: space-between; align-items: center; width: 30px; }
+        .axis-y span { writing-mode: vertical-rl; color: var(--text-light); font-size: 0.9rem; font-weight: 600; letter-spacing: 2px; }
+        .axis-x { position: absolute; bottom: -40px; left: 0; right: 0; display: flex; justify-content: space-between; align-items: center; }
+        .axis-x span { color: var(--text-light); font-size: 0.9rem; font-weight: 600; }
+        .axis-line-y { position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; background-color: var(--color-sand); transform: translateX(-50%); z-index: 1; }
+        .axis-line-x { position: absolute; top: 50%; left: 0; right: 0; height: 2px; background-color: var(--color-sand); transform: translateY(-50%); z-index: 1; }
 
-        .quadrant-bg {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            grid-template-rows: 1fr 1fr;
-            gap: 15px;
-            position: relative;
-        }
-
-        /* 桌面端坐标轴 (修复了文字重叠问题) */
-        .axis-y {
-            position: absolute; left: -45px; top: 0; bottom: 0;
-            display: flex; flex-direction: column; justify-content: space-between; align-items: center;
-            width: 30px;
-        }
-        .axis-y span {
-            writing-mode: vertical-rl;
-            color: var(--text-light); font-size: 0.9rem; font-weight: 600; letter-spacing: 2px;
-        }
-        
-        .axis-x {
-            position: absolute; bottom: -40px; left: 0; right: 0;
-            display: flex; justify-content: space-between; align-items: center;
-        }
-        .axis-x span {
-            color: var(--text-light); font-size: 0.9rem; font-weight: 600;
-        }
-
-        .axis-line-y {
-            position: absolute; left: 50%; top: 0; bottom: 0; width: 2px;
-            background-color: var(--color-sand); transform: translateX(-50%); z-index: 1;
-        }
-        .axis-line-x {
-            position: absolute; top: 50%; left: 0; right: 0; height: 2px;
-            background-color: var(--color-sand); transform: translateY(-50%); z-index: 1;
-        }
-
-        .q-cell {
-            padding: 24px;
-            border-radius: var(--radius-md);
-            position: relative;
-            z-index: 2;
-        }
-
+        .q-cell { padding: 24px; border-radius: var(--radius-md); position: relative; z-index: 2; }
         .q-1 { background-color: rgba(196, 109, 83, 0.06); border: 1px solid rgba(196, 109, 83, 0.15); }
         .q-2 { background-color: rgba(214, 156, 82, 0.06); border: 1px solid rgba(214, 156, 82, 0.15); }
         .q-3 { background-color: #f7f9f7; border: 1px solid #eaecea; }
         .q-4 { background-color: #fcfcfb; border: 1px solid #f0eee9; }
-
         .q-cell h4 { color: #2c2825; margin-bottom: 12px; font-size: 1.05rem; }
-        
-        .q-desc p {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            line-height: 1.5;
-            margin-bottom: 6px;
-        }
-        .q-desc p:last-child {
-            margin-bottom: 0;
-        }
-        .q-desc strong {
-            color: var(--text-main);
-            font-weight: 600;
-        }
-
-        .q-badge {
-            display: inline-block; font-size: 0.75rem; padding: 3px 8px;
-            border-radius: 4px; margin-bottom: 10px; font-weight: 600;
-        }
+        .q-desc p { font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 6px; }
+        .q-desc p:last-child { margin-bottom: 0; }
+        .q-desc strong { color: var(--text-main); font-weight: 600; }
+        .q-badge { display: inline-block; font-size: 0.75rem; padding: 3px 8px; border-radius: 4px; margin-bottom: 10px; font-weight: 600; }
         .badge-red { background: var(--color-terracotta); color: white; }
         .badge-gold { background: var(--color-ochre); color: white; }
         .badge-gray { background: #b0a8a3; color: white; }
 
         /* ==========================================================================
-           漏斗节点
+           关键洞察警示框
            ========================================================================== */
-        .funnel-container {
+        .insight-alert {
+            background: #fff5f5;
+            border: 1px solid #fed7d7;
+            border-left: 5px solid var(--color-alert);
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 30px;
             display: flex;
-            flex-direction: column;
-            gap: 20px;
+            align-items: flex-start;
+            gap: 15px;
         }
+        .insight-alert i { color: var(--color-alert); font-size: 1.5rem; margin-top: 2px; }
+        .insight-alert h4 { color: #c53030; margin-bottom: 5px; font-size: 1.05rem; }
+        .insight-alert p { color: #742a2a; font-size: 0.95rem; margin: 0; font-weight: 500; }
 
-        .funnel-step {
-            display: flex;
-            background: var(--bg-card);
-            border-radius: var(--radius-lg);
-            box-shadow: var(--shadow-soft);
-            overflow: hidden;
-            border: 1px solid rgba(230, 226, 216, 0.6);
-        }
-
-        .funnel-number {
-            background-color: var(--color-sage);
-            color: white;
-            width: 80px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.6rem;
-            font-weight: 800;
-            flex-shrink: 0;
-        }
-
+        /* ==========================================================================
+           漏斗节点 (三级火箭)
+           ========================================================================== */
+        .funnel-container { display: flex; flex-direction: column; gap: 20px; }
+        .funnel-step { display: flex; background: var(--bg-card); border-radius: var(--radius-lg); box-shadow: var(--shadow-soft); overflow: hidden; border: 1px solid rgba(230, 226, 216, 0.6); }
+        .funnel-number { background-color: var(--color-sage); color: white; width: 80px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 1.2rem; font-weight: 800; flex-shrink: 0; text-align: center; line-height: 1.2; padding: 10px; }
+        .funnel-number span.sub { font-size: 0.8rem; font-weight: 400; opacity: 0.9; margin-top: 5px; }
         .step-2 .funnel-number { background-color: var(--color-ochre); }
         .step-3 .funnel-number { background-color: var(--color-terracotta); }
-
-        .funnel-content {
-            padding: 25px 30px;
-            flex-grow: 1;
-        }
-
-        .funnel-content h3 {
-            font-size: 1.2rem;
-            margin-bottom: 10px;
-            color: #2c2825;
-        }
-
-        .funnel-detail {
-            display: flex;
-            gap: 15px;
-            margin-top: 15px;
-            background: #fdfcfb;
-            padding: 15px;
-            border-radius: 12px;
-            border-left: 4px solid var(--color-ochre);
-        }
-
-        .funnel-detail.split {
-            flex-direction: column;
-            gap: 10px;
-            background: transparent;
-            padding: 0;
-            border: none;
-        }
-
-        .split-item {
-            background: #fdfcfb;
-            padding: 15px;
-            border-radius: 12px;
-            border-left: 4px solid var(--color-sand);
-        }
-
+        .funnel-content { padding: 25px 30px; flex-grow: 1; }
+        .funnel-content h3 { font-size: 1.15rem; margin-bottom: 8px; color: #2c2825; }
+        .funnel-tag { display: inline-block; background: #f0e9df; color: var(--color-ochre); font-size: 0.8rem; padding: 4px 10px; border-radius: 6px; font-weight: 600; margin-bottom: 12px; }
+        
+        .funnel-detail { display: flex; gap: 15px; margin-top: 15px; background: #fdfcfb; padding: 15px; border-radius: 12px; border-left: 4px solid var(--color-ochre); }
+        .funnel-detail.split { flex-direction: column; gap: 10px; background: transparent; padding: 0; border: none; }
+        .split-item { background: #fdfcfb; padding: 15px; border-radius: 12px; border-left: 4px solid var(--color-sand); }
         .split-item h4 { font-size: 0.95rem; margin-bottom: 6px; color: var(--text-main); }
         .split-item p { font-size: 0.9rem; color: var(--text-muted); }
 
@@ -394,45 +306,15 @@
         /* ==========================================================================
            护城河
            ========================================================================== */
-        .moat-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-        }
-
-        .moat-card {
-            background: var(--bg-card);
-            padding: 30px 25px;
-            border-radius: var(--radius-lg);
-            box-shadow: var(--shadow-soft);
-            text-align: center;
-            border-top: 4px solid var(--color-sand);
-            transition: transform 0.3s;
-        }
-
-        .moat-card:hover {
-            transform: translateY(-4px);
-            border-top-color: var(--color-terracotta);
-        }
-
-        .moat-icon {
-            width: 56px;
-            height: 56px;
-            background: #fdf8f6;
-            color: var(--color-terracotta);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.4rem;
-            margin: 0 auto 16px;
-        }
-
+        .moat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+        .moat-card { background: var(--bg-card); padding: 30px 25px; border-radius: var(--radius-lg); box-shadow: var(--shadow-soft); text-align: center; border-top: 4px solid var(--color-sand); transition: transform 0.3s; }
+        .moat-card:hover { transform: translateY(-4px); border-top-color: var(--color-terracotta); }
+        .moat-icon { width: 56px; height: 56px; background: #fdf8f6; color: var(--color-terracotta); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; margin: 0 auto 16px; }
         .moat-card h3 { font-size: 1.1rem; margin-bottom: 12px; color: #2c2825; }
         .moat-card p { font-size: 0.9rem; color: var(--text-muted); text-align: left; }
 
         /* ==========================================================================
-           极佳的移动端响应式 (Mobile Responsiveness)
+           极佳的移动端响应式
            ========================================================================== */
         @media (max-width: 768px) {
             header { padding: 40px 15px 30px; }
@@ -441,18 +323,17 @@
             
             .card { padding: 25px 20px; border-radius: 20px; }
             .grid-2 { grid-template-columns: 1fr; gap: 24px; }
+            .essence-grid { grid-template-columns: 1fr; }
 
-            /* 四象限在手机端的优雅堆叠 */
             .quadrant-wrapper { padding: 0; background: transparent; box-shadow: none; margin: 20px 0; }
             .axis-y, .axis-x, .axis-line-y, .axis-line-x { display: none; }
             .quadrant-bg { display: flex; flex-direction: column; gap: 15px; }
             .q-cell { padding: 20px; box-shadow: var(--shadow-soft); background: var(--bg-card); border-radius: 16px; }
             
-            /* 漏斗手机端优化 */
             .funnel-step { flex-direction: column; border-radius: 20px; }
-            .funnel-number { width: 100%; height: auto; padding: 12px 0; font-size: 1.3rem; }
+            .funnel-number { width: 100%; height: auto; padding: 12px 0; flex-direction: row; gap: 10px; }
+            .funnel-number span.sub { margin-top: 0; font-size: 1rem; }
             .funnel-content { padding: 20px; }
-            .stat-box { grid-template-columns: 1fr; }
 
             .moat-grid { grid-template-columns: 1fr; }
         }
@@ -464,17 +345,32 @@
     <header>
         <div class="report-tag"><i class="fa-solid fa-file-shield"></i> 核心商业机密拆解</div>
         <h1>倩子·大健康IP商业模式<br>全景漏斗与底层逻辑</h1>
-        <p class="subtitle">剔除理论幻想，直击成交本质。这是一场针对转型焦虑的精准收割局。</p>
+        <p class="subtitle">在衰退大盘里赚“恐慌转型”的刚需钱。这是一场针对转型焦虑的精准收割局。</p>
     </header>
 
     <!-- 模块一：核心生意本质 -->
     <section>
         <div class="section-header">
-            <h2>一、 核心生意的本质</h2>
+            <h2>一、 核心生意本质：在衰退大盘里赚刚需钱</h2>
         </div>
         <div class="card">
             <div class="card-title"><i class="fa-solid fa-crosshairs"></i> 一场“极易爆雷”的精准收割局</div>
-            <p>撕开“教人做个人IP”的光鲜外衣，这门生意根本不是在做长期的知识教育，而是精准盯准了以下两种极端需求：</p>
+            <p>大健康IP化陪跑本质上是一门<strong>“卖救命药”</strong>的生意。撕开“教人做个人IP”的光鲜外衣，它根本不是在做长期的知识教育，而是精准盯准了传统渠道濒死者的极端需求。</p>
+            
+            <div class="essence-grid">
+                <div class="essence-box">
+                    <h4><i class="fa-solid fa-hourglass-half"></i> 红利周期</h4>
+                    <p>处于1-2年的结构性红利期，利用大健康实体及微商集体的流量枯竭期进行快速变现。</p>
+                </div>
+                <div class="essence-box">
+                    <h4><i class="fa-solid fa-bolt"></i> 刚需逻辑</h4>
+                    <p>客户面临线下渠道失效、代理流失、收入归零的生死绝境，<strong>IP化是其唯一的救命稻草</strong>。</p>
+                </div>
+                <div class="essence-box">
+                    <h4><i class="fa-solid fa-chart-pie"></i> 商业底色</h4>
+                    <p>高客单价(10万+)、高利润(纯知识服务毛利近100%)、高交付压力(重度陪跑)、低规模化可能(手艺活)。</p>
+                </div>
+            </div>
             <br>
             <div class="grid-2">
                 <div class="ideology-box">
@@ -493,8 +389,9 @@
     <!-- 模块二：用户人群全景图 -->
     <section>
         <div class="section-header">
-            <h2>二、 用户全景画像与底层需求</h2>
+            <h2>二、 客户画像全景图：谁在贡献那10万？</h2>
         </div>
+        <p class="subtitle" style="text-align: center; margin-bottom: 40px;">根据调研数据，付费人群呈现极度失衡的“二八原则”</p>
         
         <!-- 四象限矩阵 -->
         <div class="quadrant-wrapper">
@@ -505,28 +402,32 @@
             
             <div class="quadrant-bg">
                 <div class="q-cell q-1">
-                    <span class="q-badge badge-red">10万绝对主力</span>
+                    <span class="q-badge badge-red">10万绝对主力 (80%+)</span>
                     <h4>Q1: 圈内大B (高净值)</h4>
                     <div class="q-desc">
-                        <p><strong>实际付款者：</strong>直销/微商大团队长、实体老板</p>
-                        <p><strong>理论潜在盘：</strong>重资产实体老板(中医/医美/产康)、供应链厂长、私立专科名医</p>
-                        <p style="margin-top: 8px;"><strong>核心需求：</strong>传统渠道死局，掏10万买线上招商与同城获客重构。刚需中的刚需。</p>
+                        <p><strong style="color: #c46d53;">实际付款者：</strong>直销/微商大团队长、实体老板、转型知识付费老板</p>
+                        <p><strong>直销/微商团队长：</strong>传统“拉人头”崩盘，急需IP洗白吸附代理。最刚需最舍得掏钱。</p>
+                        <p><strong>重资产实体老板(中医/医美/产康)：</strong>面临房租重压，急需线上获客救命。</p>
+                        <p><strong>供应链工厂老板：</strong>厌倦5%代工利润，想靠IP直接收割高毛利。</p>
+                        <p><strong>私立专科名医</strong></p>
                     </div>
                 </div>
                 <div class="q-cell q-2">
                     <span class="q-badge badge-gold">10万优质新贵</span>
                     <h4>Q2: 圈外大老板 (高净值)</h4>
                     <div class="q-desc">
-                        <p><strong>实际付款者：</strong>无</p>
-                        <p><strong>理论潜在盘：</strong>大厂高管、跨界实体老板、流量见顶的老网红、买仙气的富贵阔太</p>
-                        <p style="margin-top: 8px;"><strong>核心需求：</strong>带资进组，图暴利与社交尊严，买的是空手套白狼的代运营系统。</p>
+                        <p>倩子实际没有这个圈的人，以下为理论推导</p>
+                        <p><strong>传统老板：</strong>手里有闲钱，买“避坑外挂”和现成赚钱模型。</p>
+                        <p><strong>职场精英/老师：</strong>拿补偿金，买职业尊严和轻资产创业系统。</p>
+                        <p><strong>高净值阔太：</strong>买“主理人”高雅身份和白手套服务。</p>
+                        <p><strong>流量见顶的老网红</strong></p>
                     </div>
                 </div>
                 <div class="q-cell q-3">
                     <span class="q-badge badge-gray">3980元气氛组</span>
                     <h4>Q3: 圈内小B (底层手艺人)</h4>
                     <div class="q-desc">
-                        <p><strong>实际付款者：</strong>个体营养师、打工教练</p>
+                        <p><strong style="color: #c46d53;">实际付款者：</strong>个体营养师、打工教练</p>
                         <p><strong>理论潜在盘：</strong>基层护士、身心疗愈初级者、会销推销员</p>
                         <p style="margin-top: 8px;"><strong>核心需求：</strong>极度内卷，付不起10万。花小钱病急乱投医，纯粹的垫脚石与气氛组。</p>
                     </div>
@@ -535,7 +436,7 @@
                     <span class="q-badge badge-gray">底层纯分母</span>
                     <h4>Q4: 圈外纯小白 (底层跟风)</h4>
                     <div class="q-desc">
-                        <p><strong>实际付款者：</strong>负债宝妈、职场小白</p>
+                        <p><strong style="color: #c46d53;">实际付款者：</strong>负债宝妈、职场小白</p>
                         <p><strong>理论潜在盘：</strong>找副业的普通职员、盲目跟风的韭菜</p>
                         <p style="margin-top: 8px;"><strong>核心需求：</strong>被“月入十万”洗脑进来。没钱没资源，没有任何可能付10万的陪跑分母。</p>
                     </div>
@@ -548,12 +449,12 @@
             <div class="grid-2">
                 <!-- 左列：80% 圈内人 -->
                 <div>
-                    <h3 style="color: var(--color-terracotta); margin-bottom: 16px; font-size: 1.1rem;">80% 圈内人 (寻找救命药)</h3>
+                    <h3 style="color: var(--color-terracotta); margin-bottom: 16px; font-size: 1.1rem;">80% 圈内老炮 (寻找救命药)</h3>
                     
                     <div class="list-group">
-                        <div class="list-title">派系一：重资产实体 (被房租绑架图拓客)</div>
+                        <div class="list-title">派系一：重资产实体</div>
                         <div class="num-list">
-                            <div class="num-item"><div class="num-badge">1</div><p>传统中医理疗/养生馆老板</p></div>
+                            <div class="num-item"><div class="num-badge">1</div><p>传统中医理疗/养生馆老板<span class="desc">被房租绑架，图同城拓客</span></p></div>
                             <div class="num-item"><div class="num-badge">2</div><p>女性产康与月子中心老板</p></div>
                             <div class="num-item"><div class="num-badge">3</div><p>轻医美与抗衰皮肤管理老板</p></div>
                             <div class="num-item"><div class="num-badge">4</div><p>形体与运动健康(瑜伽普拉提)</p></div>
@@ -561,9 +462,9 @@
                     </div>
                     
                     <div class="list-group">
-                        <div class="list-title">派系二：产品销售 (被库存压垮图招商)</div>
+                        <div class="list-title">派系二：产品销售 (绝对主力)</div>
                         <div class="num-list">
-                            <div class="num-item highlight"><div class="num-badge">5</div><p><strong>传统直销与微商团队长(主力)</strong></p></div>
+                            <div class="num-item highlight"><div class="num-badge">5</div><p><strong>传统直销与微商团队长</strong><span class="desc">传统拉人头崩盘，急需IP洗白重构招商</span></p></div>
                             <div class="num-item"><div class="num-badge">6</div><p>药食同源与滋补品源头工厂</p></div>
                             <div class="num-item"><div class="num-badge">7</div><p>健康智能硬件老板</p></div>
                         </div>
@@ -587,15 +488,15 @@
                     </div>
                 </div>
                 
-                <!-- 右列：20% 圈外人 & 思想分类 -->
+                <!-- 右列：20% 圈外人 & 关键洞察 -->
                 <div>
-                    <h3 style="color: var(--color-ochre); margin-bottom: 16px; font-size: 1.1rem;">20% 圈外人 (寻找暴利入场券)</h3>
+                    <h3 style="color: var(--color-ochre); margin-bottom: 16px; font-size: 1.1rem;">20% 跨界野蛮人 (带资进组)</h3>
                     <div class="list-group">
                         <div class="num-list">
-                            <div class="num-item"><div class="num-badge" style="background:#e6e2d8; color:var(--text-main);">1</div><p><strong>亏怕了的传统老板：</strong>图大健康无门店、空手套白狼的轻资产模式。</p></div>
-                            <div class="num-item"><div class="num-badge" style="background:#e6e2d8; color:var(--text-main);">2</div><p><strong>被优化的前职场精英/老师：</strong>拿补偿金，图换个合法讲台降维收割小白。</p></div>
-                            <div class="num-item"><div class="num-badge" style="background:#e6e2d8; color:var(--text-main);">3</div><p><strong>卖不动货的带货网红/老微商：</strong>图大健康低退货率与成瘾性复购的暴利。</p></div>
-                            <div class="num-item"><div class="num-badge" style="background:#e6e2d8; color:var(--text-main);">4</div><p><strong>买仙气的富贵闲人/阔太：</strong>不差钱，图买一个“疗愈女神/主理人”的社交面具。</p></div>
+                            <div class="num-item"><div class="num-badge" style="background:#e6e2d8; color:var(--text-main);">1</div><p><strong>亏怕了的传统行业老板：</strong><span class="desc">如餐饮/房地产，手里几百万闲钱，买避坑外挂和现成赚钱模型。</span></p></div>
+                            <div class="num-item"><div class="num-badge" style="background:#e6e2d8; color:var(--text-main);">2</div><p><strong>被优化的前职场精英/老师</strong><span class="desc">拿着补偿金，买的是职业尊严和轻资产创业的系统。</span></p></div>
+                            <div class="num-item"><div class="num-badge" style="background:#e6e2d8; color:var(--text-main);">3</div><p><strong>卖不动货的带货网红/老微商：</strong><span class="desc">看中大健康低退货率与成瘾性复购的暴利。</span></p></div>
+                            <div class="num-item"><div class="num-badge" style="background:#e6e2d8; color:var(--text-main);">4</div><p><strong>高净值阔太：</strong><span class="desc">买“疗愈女神/主理人”的高雅身份和社交面具。</span></p></div>
                         </div>
                     </div>
 
@@ -614,21 +515,31 @@
                     </div>
                 </div>
             </div>
+            <!-- 关键洞察 -->
+            <div class="insight-alert">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                <div>
+                    <h4>关键洞察</h4>
+                    <p>专业人士（打工者）和0-1找方向的小白，几乎不可能贡献那10万。他们仅仅是庞大漏斗底部的分母和气氛组。</p>
+                </div>
+            </div>
         </div>
     </section>
 
-    <!-- 模块三：转化漏斗 -->
+    <!-- 模块三：三级火箭漏斗 -->
     <section>
         <div class="section-header">
-            <h2>三、 商业转化漏斗</h2>
+            <h2>三、 “三级火箭”漏斗：精密的流量洗牌系统</h2>
         </div>
+        <p class="subtitle" style="text-align: center; margin-bottom: 40px;">倩子的模式不是在卖课，而是在运营一套<strong>“认知降维+场域收割”</strong>的闭环漏斗</p>
         
         <div class="funnel-container">
-            <!-- Node 1 -->
+            <!-- 级 1 -->
             <div class="funnel-step step-1">
-                <div class="funnel-number">01</div>
+                <div class="funnel-number">第一级<span class="sub">引流</span></div>
                 <div class="funnel-content">
-                    <h3>线上发售公开课 (重金投流，宽网捕捞)</h3>
+                    <span class="funnel-tag">捕捞 (大规模洗入意向粉)</span>
+                    <h3>4天线上发售公开课 (重金投流，宽网捕捞)</h3>
                     <p style="margin-bottom:12px; color:var(--text-muted);">核心动作：平台重金投放信息流广告，用刺眼标签洗入意向粉。</p>
                     <div class="funnel-detail split">
                         <div class="split-item" style="border-left-color: var(--color-ochre);">
@@ -643,11 +554,12 @@
                 </div>
             </div>
 
-            <!-- Node 2 -->
+            <!-- 级 2 -->
             <div class="funnel-step step-2">
-                <div class="funnel-number">02</div>
+                <div class="funnel-number">第二级<span class="sub">过滤</span></div>
                 <div class="funnel-content">
-                    <h3>3980元线下课 (验资提纯，建立高压场域)</h3>
+                    <span class="funnel-tag">提纯 (验资+建立深度信任)</span>
+                    <h3>3980元线下课3天2夜</h3>
                     <p>异地奔赴绝不是为了听课，这3980元是<strong>“买底牌的过路费”</strong>。客户为的是当面拿走见光死的脚本、私域话术及对接代工厂。同时，线下封闭环境制造出“全中国都在抢红利”的极度恐慌感。</p>
                     <div class="stat-box">
                         <div class="stat-item" style="background: rgba(125, 144, 120, 0.08);">
@@ -662,10 +574,11 @@
                 </div>
             </div>
 
-            <!-- Node 3 -->
+            <!-- 级 3 -->
             <div class="funnel-step step-3">
-                <div class="funnel-number">03</div>
+                <div class="funnel-number">第三级<span class="sub">收割</span></div>
                 <div class="funnel-content">
+                    <span class="funnel-tag">套现 (锁定高净值大B客户)</span>
                     <h3>10万全案陪跑 (精准过滤与高压收割)</h3>
                     <p>漏斗的最核心终局。在此节点，<strong style="color: var(--color-terracotta);">不存在所谓的中客单价缓冲（如理论上的陪跑群等产物）</strong>，而是极其残酷的精准筛选。只成交能付得起10万的大B客户，其余掏不出钱的底层打工人和小白，则纯粹沦为垫脚石与气氛分母。</p>
                     <div class="funnel-detail" style="border-left-color: var(--color-terracotta);">
