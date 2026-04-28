@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>女性大健康食养 IP 孵化营 - 终极商业全案</title>
+    <style>
+        /* 基础变量设置 - 采用高级中式食养色调 */
+        :root {
+            --primary-dark: #2C3E2D;   /* 沉稳墨绿 */
+            --primary-light: #4A674B;  /* 柔和森林绿 */
+            --accent-gold: #D4AF37;    /* 雅致暗金 */
+            --bg-base: #F9F8F6;        /* 宣纸暖白 */
+            --bg-card: #FFFFFF;        /* 纯白卡片 */
+            --text-main: #333333;      /* 主文本深灰 */
+            --text-muted: #666666;     /* 辅助文本中灰 */
+            --border-light: #EBEBEB;   /* 极浅边框 */
+        }
+
+        /* 全局样式 resets */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", STHeiti, "Microsoft Yahei", Tahoma, Simsun, sans-serif;
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* 布局容器 */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* 头部样式 */
+        .hero-header {
+            text-align: center;
+            padding: 60px 0;
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary-light));
+            color: white;
+            border-radius: 16px;
+            margin-bottom: 50px;
+            box-shadow: 0 10px 30px rgba(44, 62, 45, 0.15);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-header::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: url('data:image/svg+xml;utf8,<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M50 0 C77.6 0 100 22.4 100 50 C100 77.6 77.6 100 50 100 C22.4 100 0 77.6 0 50 C0 22.4 22.4 0 50 0 Z" fill="rgba(255,255,255,0.03)"/></svg>');
+            background-size: 200px 200px;
+            z-index: 1;
+        }
+
+        .hero-title {
+            font-size: 36px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-subtitle {
+            font-size: 18px;
+            color: #E2E8E3;
+            font-weight: 300;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background-color: var(--accent-gold);
+            color: #fff;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            margin-top: 20px;
+            position: relative;
+            z-index: 2;
+            letter-spacing: 1px;
+        }
+
+        /* 通用区块样式 */
+        .section-wrapper {
+            background-color: var(--bg-card);
+            border-radius: 12px;
+            padding: 40px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+            border: 1px solid var(--border-light);
+        }
+
+        .section-title {
+            font-size: 24px;
+            color: var(--primary-dark);
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--border-light);
+            display: flex;
+            align-items: center;
+        }
+
+        .section-title::before {
+            content: '';
+            display: inline-block;
+            width: 6px;
+            height: 24px;
+            background-color: var(--accent-gold);
+            margin-right: 12px;
+            border-radius: 3px;
+        }
+
+        /* 卡片网格系统 */
+        .grid-2-col {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+        }
+
+        .info-card {
+            background: var(--bg-base);
+            padding: 25px;
+            border-radius: 8px;
+            border-left: 4px solid var(--primary-light);
+            transition: transform 0.2s ease;
+        }
+
+        .info-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.05);
+        }
+
+        .info-card h4 {
+            color: var(--primary-dark);
+            font-size: 18px;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .badge-tag {
+            font-size: 12px;
+            background: #E8F0E8;
+            color: var(--primary-dark);
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-weight: normal;
+        }
+
+        /* 特殊高亮框 */
+        .highlight-quote {
+            background-color: #FDF9F1;
+            border: 1px dashed var(--accent-gold);
+            padding: 25px;
+            text-align: center;
+            border-radius: 8px;
+            margin: 30px 0;
+            font-size: 20px;
+            color: var(--primary-dark);
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        /* 列表样式 */
+        ul.custom-list {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        ul.custom-list li {
+            position: relative;
+            padding-left: 24px;
+            margin-bottom: 12px;
+            color: var(--text-muted);
+        }
+
+        ul.custom-list li::before {
+            content: '•';
+            color: var(--accent-gold);
+            position: absolute;
+            left: 0;
+            font-size: 20px;
+            line-height: 1.2;
+        }
+
+        /* 漏斗/价格表卡片 */
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .pricing-card {
+            border: 1px solid var(--border-light);
+            border-radius: 12px;
+            overflow: hidden;
+            background: white;
+        }
+
+        .pricing-header {
+            padding: 25px 20px;
+            text-align: center;
+            background: var(--bg-base);
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .pricing-header.premium {
+            background: var(--primary-dark);
+            color: white;
+            border-bottom: none;
+        }
+
+        .price-tag {
+            font-size: 32px;
+            font-weight: bold;
+            color: var(--accent-gold);
+            margin: 10px 0;
+        }
+
+        .premium .price-tag {
+            color: var(--accent-gold);
+        }
+
+        .pricing-body {
+            padding: 30px 20px;
+        }
+
+        /* 模块化小标题 */
+        .module-title {
+            font-weight: 600;
+            color: var(--text-main);
+            margin: 15px 0 8px 0;
+            font-size: 15px;
+        }
+
+        /* 流程步骤图 */
+        .process-flow {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .process-step {
+            display: flex;
+            align-items: flex-start;
+            background: var(--bg-base);
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .step-number {
+            background: var(--primary-dark);
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+            margin-right: 15px;
+        }
+
+        .step-content h4 {
+            color: var(--primary-dark);
+            margin-bottom: 5px;
+        }
+
+        .step-content p {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        /* 页脚 */
+        footer {
+            text-align: center;
+            padding: 40px 0;
+            color: #999;
+            font-size: 13px;
+        }
+
+        /* 响应式调整 */
+        @media (max-width: 768px) {
+            .container { padding: 20px; }
+            .hero-title { font-size: 28px; }
+            .section-wrapper { padding: 25px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    
+    <!-- 顶部主视觉 -->
+    <header class="hero-header">
+        <div class="hero-badge">绝密商业企划案</div>
+        <h1 class="hero-title">女性大健康食养 IP 孵化营</h1>
+        <div class="hero-subtitle">打造“全域变现”的中式食养主理人，抢占健康轻创业风口</div>
+    </header>
+
+    <!-- 模块一：顶层定位 -->
+    <section class="section-wrapper">
+        <h2 class="section-title">一、 项目顶层定位</h2>
+        
+        <div class="grid-2-col">
+            <div class="info-card">
+                <h4>项目本质 <span class="badge-tag">核心赛道</span></h4>
+                <p style="color: var(--text-muted); font-size: 15px;">大健康赛道的“超级IP孵化工厂”。我们不赚卖货的辛苦钱，而是教人如何打造高价值的【大健康食养IP】，实现公域引流与私域高客单变现的完美闭环。</p>
+            </div>
+            
+            <div class="info-card">
+                <h4>对外身份 <span class="badge-tag">人设锚定</span></h4>
+                <p style="color: var(--text-muted); font-size: 15px;">拒绝微商感，拒绝枯燥说教。学员对外身份统一为：<b>【中式食养主理人】</b>。她们是懂五脏能量、懂内调变美、能提供情绪价值的知心闺蜜。</p>
+            </div>
+        </div>
+
+        <div style="margin-top: 25px; background: #fbfbfb; padding: 20px; border-radius: 8px; border: 1px dashed #ccc;">
+            <p><b>💰 盈利模式：</b> 前端赚认知赋能费（门票/陪跑），后端依托强大供应链，通过学员的私域全案交付赚取长尾利润。</p>
+        </div>
+    </section>
+
+    <!-- 模块二：目标人群 -->
+    <section class="section-wrapper">
+        <h2 class="section-title">二、 目标人群画像 (买单方)</h2>
+        <p style="color: var(--text-muted); margin-bottom: 20px;">我们的核心受众是“想要在女性大健康赛道进行轻创业的中高端人群”。</p>
+        
+        <div class="grid-2-col">
+            <div class="info-card" style="border-left-color: var(--accent-gold);">
+                <h4>主力圈外：中高端转型女性 <span class="badge-tag" style="background:#FDF9F1; color:var(--accent-gold);">核心目标</span></h4>
+                <ul class="custom-list" style="margin-top:10px;">
+                    <li><b>群体：</b>想搞钱的宝妈、职场寻求转型的中产女性。</li>
+                    <li><b>痛点：</b>想做自媒体IP，但不懂中医知识、不会写引流文案、没有靠谱产品供应链。</li>
+                    <li><b>卖点：</b>提供极轻资产的“傻瓜式起盘系统”，满足其体面创业、获得社会价值的需求。</li>
+                </ul>
+            </div>
+            
+            <div class="info-card">
+                <h4>圈内刚需：实体/前微商大军</h4>
+                <ul class="custom-list" style="margin-top:10px;">
+                    <li><b>群体：</b>实体美业/养生馆老板娘、前微商团队长。</li>
+                    <li><b>痛点：</b>线下拓客难、单客产值低；微商模式崩盘，急需高端、合规的新项目洗白身份。</li>
+                    <li><b>卖点：</b>赋予“五脏能量降维打击”工具，解决公域流量焦虑，实现私域高客单升单。</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- 模块三：产品矩阵 -->
+    <section class="section-wrapper">
+        <h2 class="section-title">三、 产品矩阵与交付漏斗</h2>
+        
+        <div class="pricing-grid">
+            <!-- 3980 线下课 -->
+            <div class="pricing-card">
+                <div class="pricing-header">
+                    <h3 style="color: var(--primary-dark); margin:0;">【食养IP起盘营】</h3>
+                    <div class="price-tag">¥ 3,980</div>
+                    <p style="color: var(--text-muted); font-size: 14px;">3天2夜线下课 · 破冰与起盘</p>
+                </div>
+                <div class="pricing-body">
+                    <div class="module-title">1. 小红书公域搞流量</div>
+                    <ul class="custom-list" style="font-size: 14px;">
+                        <li>人设打造与合规避雷（避开医疗违禁词）</li>
+                        <li>大白话内容爆款库（图文/视频无脑抄作业）</li>
+                    </ul>
+                    
+                    <div class="module-title">2. 私域运营与成交术</div>
+                    <ul class="custom-list" style="font-size: 14px;">
+                        <li>粉丝承接流程与信任感建立</li>
+                        <li>高客单全案逼单话术系统</li>
+                    </ul>
+
+                    <div class="module-title" style="color: var(--primary-dark);">3. 【核心】五脏能量专业知识</div>
+                    <ul class="custom-list" style="font-size: 14px;">
+                        <li>五脏性格、身体、情绪解读</li>
+                        <li>《全息人体使用说明书》实操</li>
+                        <li>五脏能量系统测评及食养汤方搭配</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 29800 陪跑营 -->
+            <div class="pricing-card">
+                <div class="pricing-header premium">
+                    <h3 style="color: white; margin:0;">【全案陪跑营】</h3>
+                    <div class="price-tag">¥ 29,800</div>
+                    <p style="color: rgba(255,255,255,0.8); font-size: 14px;">深度陪跑 · 带你拿结果</p>
+                </div>
+                <div class="pricing-body">
+                    <div class="module-title">核心痛点解决</div>
+                    <p style="font-size:14px; color:var(--text-muted); margin-bottom:15px;">解决学员听懂了但做不出来、不敢开单的落地恐惧。导师亲自下场兜底。</p>
+                    
+                    <div class="module-title">专属服务内容</div>
+                    <ul class="custom-list" style="font-size: 14px;">
+                        <li><b>1v1 账号精修：</b>定位、主页装修、首发内容扶持。</li>
+                        <li><b>销转三方会诊：</b>总部专家进群辅助逼单，帮破首单恐惧。</li>
+                        <li><b>长期弹药库：</b>每周更新私域/公域最新爆款文案。</li>
+                        <li><b>顶配供应链特权：</b>更低拿货价及特定权限支持。</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 模块四：变现闭环 -->
+    <section class="section-wrapper">
+        <h2 class="section-title">四、 学员 C 端变现闭环</h2>
+        
+        <div class="highlight-quote">
+            核心铁律：公域前端分享养生知识，私域后端卖食养方案。
+        </div>
+
+        <div class="process-flow">
+            <div class="process-step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h4>公域吸粉 (造势与引流)</h4>
+                    <p>在小红书不卖货，只输出“痛点+情绪”的大白话（如：肚子凉、黄脸婆怎么内调）。树立懂保养的“变美闺蜜”人设，筛选出有强烈变美/调理意愿的精准女粉。</p>
+                </div>
+            </div>
+            
+            <div class="process-step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h4>私域诊断 (建立绝对信任)</h4>
+                    <p>粉丝加微信后，赠送“五脏能量状态测评”。用五脏理论帮她算出“性格、情绪卡点和身体问题根源”，让她产生“只有你懂我的委屈”的极高信任度。</p>
+                </div>
+            </div>
+
+            <div class="process-step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h4>高客单成交 (卖方案)</h4>
+                    <p>绝不单独售卖几十块的茶包，而是结合测评结果，直接发售标价大几千元的【定制专属食养变美全案】（包含产品+阶段性打卡指导）。</p>
+                </div>
+            </div>
+
+            <div class="process-step">
+                <div class="step-number">4</div>
+                <div class="step-content">
+                    <h4>无痕履约 (总部兜底)</h4>
+                    <p>学员前台收钱，总部后台一件代发食养汤方。学员只需负责线上日常的情绪安抚与打卡督促，实现极轻资产的高利润闭环。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>保密文件 · 仅供内部招商与战略部署使用</p>
+        <p style="margin-top:5px;">女性大健康食养 IP 孵化营 © 2024</p>
+    </footer>
+
+</div>
+
+</body>
+</html>
